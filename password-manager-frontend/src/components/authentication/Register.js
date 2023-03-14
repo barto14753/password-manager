@@ -13,16 +13,25 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Content } from '../app/Content';
 import { RouteNames } from '../../routes/RouteNames';
+import AuthService from '../../services/AuthService';
 
 
 export default function Register() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const handleSubmit = async (event) => {
+    const form = event.target.form;
+    try {
+      AuthService.register(
+        form[0].value,
+        form[2].value,
+        form[4].value,
+        form[6].value
+      );
+      // registration successful, redirect to login page
+      // window.location.href = RouteNames.LOGIN;
+    } catch (error) {
+      console.error(error);
+      // show error message to the user
+    }
   };
 
   return (
@@ -43,7 +52,7 @@ export default function Register() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box id="registerForm" component="form" sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -95,7 +104,7 @@ export default function Register() {
               </Grid>
             </Grid>
             <Button
-              type="submit"
+              onClick={handleSubmit}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}

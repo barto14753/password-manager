@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Content } from '../app/Content';
 import { RouteNames } from '../../routes/RouteNames';
+import AuthService from '../../services/AuthService';
 
 
 export default function Login() {
@@ -18,10 +19,13 @@ export default function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    try {
+      AuthService.login(data.get('email'), data.get('password'))
+      // window.location.href = RouteNames.LOGIN;
+    } catch (error) {
+      console.error(error);
+      // show error message to the user
+    }
   };
 
   return (

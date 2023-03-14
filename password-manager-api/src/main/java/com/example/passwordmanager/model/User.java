@@ -31,7 +31,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private Boolean isLocked = false;
+    private Boolean isLocked;
 
     public Long getId() {
         return id;
