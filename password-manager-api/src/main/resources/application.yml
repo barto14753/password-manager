@@ -1,3 +1,6 @@
+server:
+  servlet:
+    context-path: /api
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/password-manager-db
@@ -15,6 +18,7 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+    dispatch-options-request: true
   servlet:
     multipart:
       max-file-size: 5MB
@@ -32,3 +36,6 @@ springdoc:
 api:
   version: 1.0.0
   description: Api for Password Manager
+jwt:
+  access-token-exp: 2
+  refresh-token-exp: 5

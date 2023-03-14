@@ -10,14 +10,12 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import AdbIcon from '@mui/icons-material/Adb';
 import { LockOpen } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom'
 import { RouteNames } from '../../routes/RouteNames';
 import { ButtonGroup } from '@mui/material';
 
 
 
 function ResponsiveAppBar() {
-  const navigate = useNavigate();
   const pages = [
     {
       key: 1,
@@ -94,6 +92,14 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
+              {pages.map(page => (
+              <Button
+                key={page.key}
+                href={page.route}
+              >
+                {page.name}
+              </Button>
+            ))}
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -119,7 +125,6 @@ function ResponsiveAppBar() {
               <Button
                 key={page.key}
                 href={page.route}
-                onClick={navigate(page.route)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page.name}

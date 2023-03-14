@@ -22,6 +22,7 @@ public class EmailValidator {
 
     public void validate(String email) throws RegisterException {
         if (regexes.stream().anyMatch(regex -> !Pattern.compile(regex).matcher(email).matches())) {
+            log.info("Invalid registration with email: " + email);
             throw new RegisterException(ExceptionMessage.getEmailInvalidMsg(email));
         }
     }
