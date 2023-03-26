@@ -21,7 +21,7 @@ export default function Register() {
 
   const clearAlert = () => {
     setAlert({ title: '', message: '', severity: '' });
-}
+  }
 
   const handleSubmit = async (event) => {
     const form = event.target.form;

@@ -59,6 +59,7 @@ public class TokenService {
     public AuthenticationResponse login(LoginRequest request) throws AuthenticationException {
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
+                
         authenticationManager.authenticate(token);
         String email = request.getEmail();
         User user = repository.findByEmail(email)
