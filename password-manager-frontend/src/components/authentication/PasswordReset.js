@@ -3,41 +3,41 @@ import { Alert, AlertTitle } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Content } from '../app/Content';
-import { RouteNames } from '../../routes/RouteNames';
 import AuthService from '../../services/AuthService';
 
 
-export default function Login() {
 
-  const [alert, setAlert] = useState({ title: '', message: '', severity: '' });
+export default function PasswordReset() {
 
-  const clearAlert = () => {
-    setAlert({ title: '', message: '', severity: '' });
-}
+    const [alert, setAlert] = useState({ title: '', message: '', severity: '' });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    AuthService.login(
-      data.get('email'), 
-      data.get('password')
-    )
-    .then(() => {
-      setAlert({ title: 'Successful login', message: "Done", severity: "success" });
-    })
-    .catch(err => {
-      setAlert({ title: 'Error during login', message: err.response.data.message, severity: "error" });
-    })
+    const clearAlert = () => {
+        setAlert({ title: '', message: '', severity: '' });
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+
+        AuthService.resetPassword(
+            data.get('email'), 
+            data.get('old-password'), 
+            data.get('new-password')
+        )
+        .then(() => {
+            setAlert({ title: 'Successful password reset', message: "Done", severity: "success" });
+        })
+        .catch(err => {
+            setAlert({ title: 'Error during password reset', message: err.response.data.message, severity: "error" });
+        })
   };
 
   return (
     <Content>
-      {alert.message && (
+        {alert.message && (
             <Alert onClose={() => clearAlert()} severity={alert.severity}>
                 <AlertTitle>{alert.title}</AlertTitle>
                 {alert.message}
@@ -54,8 +54,9 @@ export default function Login() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Password Reset
           </Typography>
+          
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -71,10 +72,20 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
+              name="old-password"
+              label="Old password"
               type="password"
-              id="password"
+              id="old-password"
+              autoComplete="current-password"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="new-password"
+              label="New password"
+              type="password"
+              id="new-password"
               autoComplete="current-password"
             />
             <Button
@@ -83,20 +94,8 @@ export default function Login() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Reset
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href={RouteNames.PASSOWRD_RESET} variant="body2">
-                  Want to change a password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href={RouteNames.REGISTER} variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Content>
