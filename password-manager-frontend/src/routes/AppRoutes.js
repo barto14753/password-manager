@@ -1,8 +1,9 @@
 import { Route, Routes } from 'react-router-dom'
-import Register from '../components/authentication/Register'
 import PageNotFound from '../components/main/PageNotFound'
 import HomeRoute from './HomeRoute'
 import LoginRoute from './LoginRoute'
+import PasswordResetRoute from './PasswordResetRoute'
+import RegisterRoute from './RegisterRoute'
 
 
 export default function AppRoutes() {
@@ -11,7 +12,8 @@ export default function AppRoutes() {
             <Route path={'/home/*'} element={<HomeRoute />} />
             <Route path={'/'} element={<HomeRoute />} />
             <Route path={'/login/*'} element={<LoginRoute />} />
-            <Route path={'/register/*'} element={<Register />} />
+            <Route path={'/register/*'} element={<RegisterRoute />} />
+            <Route path={'/password-reset/*'} element={<PasswordResetRoute />} />
             <Route path='*' element={<PageNotFound />} />
         </Routes>
     )

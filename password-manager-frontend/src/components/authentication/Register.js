@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import { Alert, AlertTitle } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -17,25 +16,37 @@ import AuthService from '../../services/AuthService';
 
 
 export default function Register() {
+
+  const [alert, setAlert] = useState({ title: '', message: '', severity: '' });
+
+  const clearAlert = () => {
+    setAlert({ title: '', message: '', severity: '' });
+}
+
   const handleSubmit = async (event) => {
     const form = event.target.form;
-    try {
-      AuthService.register(
-        form[0].value,
-        form[2].value,
-        form[4].value,
-        form[6].value
-      );
-      // registration successful, redirect to login page
-      // window.location.href = RouteNames.LOGIN;
-    } catch (error) {
-      console.error(error);
-      // show error message to the user
-    }
+    AuthService.register(
+      form[4].value,
+      form[0].value,
+      form[2].value,
+      form[6].value
+    )
+    .then(() => {
+      setAlert({ title: 'Successful registration', message: "Done", severity: "success" });
+    })
+    .catch(err => {
+      setAlert({ title: 'Error during register', message: err.response.data.message, severity: "error" });
+    })
   };
 
   return (
     <Content>
+      {alert.message && (
+            <Alert onClose={() => clearAlert()} severity={alert.severity}>
+                <AlertTitle>{alert.title}</AlertTitle>
+                {alert.message}
+            </Alert>
+        )}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -94,12 +105,6 @@ export default function Register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
             </Grid>

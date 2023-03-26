@@ -1,5 +1,6 @@
 export const RouteNames = {
     HOME: '/home',
     LOGIN: '/login',
-    REGISTER: '/register'
+    REGISTER: '/register',
+    PASSOWRD_RESET: '/password-reset'
   }

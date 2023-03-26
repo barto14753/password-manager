@@ -2,6 +2,7 @@ package com.example.passwordmanager.validator;
 
 import com.example.passwordmanager.dto.request.RegisterRequest;
 import com.example.passwordmanager.exception.ExceptionMessage;
+import com.example.passwordmanager.exception.PasswordException;
 import com.example.passwordmanager.exception.RegisterException;
 import com.example.passwordmanager.repo.user.UserRepo;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class RegisterValidator {
     private final EmailValidator emailValidator;
     private final PasswordValidator passwordValidator;
 
-    public void validate(RegisterRequest registerRequest) throws RegisterException {
+    public void validate(RegisterRequest registerRequest) throws RegisterException, PasswordException {
         String email = registerRequest.getEmail();
         String password = registerRequest.getPassword();
 
@@ -27,7 +28,7 @@ public class RegisterValidator {
         validatePassword(password);
     }
 
-    private void validatePassword(String password) throws RegisterException {
+    private void validatePassword(String password) throws PasswordException {
         passwordValidator.validate(password);
     }
 

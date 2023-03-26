@@ -5,6 +5,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,8 +46,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleDateTimeParseException(BadCredentialsException ex) {
+        return handleExceptionWithStatusCode(BAD_REQUEST, ex);
+    }
+
     @ExceptionHandler(RegisterException.class)
     public ResponseEntity<Object> handleDateTimeParseException(RegisterException ex) {
+        return handleExceptionWithStatusCode(BAD_REQUEST, ex);
+    }
+
+    @ExceptionHandler(PasswordException.class)
+    public ResponseEntity<Object> handleDateTimeParseException(PasswordException ex) {
+        return handleExceptionWithStatusCode(BAD_REQUEST, ex);
+    }
+
+    @ExceptionHandler(PasswordResetException.class)
+    public ResponseEntity<Object> handleDateTimeParseException(PasswordResetException ex) {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 

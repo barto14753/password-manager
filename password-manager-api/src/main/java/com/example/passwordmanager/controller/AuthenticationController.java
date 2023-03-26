@@ -1,9 +1,12 @@
 package com.example.passwordmanager.controller;
 
 import com.example.passwordmanager.dto.request.LoginRequest;
+import com.example.passwordmanager.dto.request.PasswordResetRequest;
 import com.example.passwordmanager.dto.request.RegisterRequest;
 import com.example.passwordmanager.dto.response.AuthenticationResponse;
 import com.example.passwordmanager.exception.AuthenticationException;
+import com.example.passwordmanager.exception.PasswordException;
+import com.example.passwordmanager.exception.PasswordResetException;
 import com.example.passwordmanager.exception.RegisterException;
 import com.example.passwordmanager.service.TokenService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +36,8 @@ public class AuthenticationController {
             description = "Invalid user registration details",
             content = @Content(schema = @Schema(hidden = true))
     )
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws RegisterException {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request)
+            throws RegisterException, PasswordException {
         return ResponseEntity.ok(service.register(request));
     }
     @PostMapping("/login")
@@ -54,6 +58,13 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> refresh(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         return ResponseEntity.ok(service.refresh(request, response));
+    }
+
+    @PostMapping("/password-reset")
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest request)
+            throws AuthenticationException, PasswordException, PasswordResetException {
+        service.resetPassword(request);
+        return ResponseEntity.ok().build();
     }
 
 }
