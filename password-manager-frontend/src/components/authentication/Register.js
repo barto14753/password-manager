@@ -13,11 +13,14 @@ import Container from '@mui/material/Container';
 import { Content } from '../app/Content';
 import { RouteNames } from '../../routes/RouteNames';
 import AuthService from '../../services/AuthService';
+import { useNavigate } from 'react-router-dom';
 
 
-export default function Register() {
-
+export default function Register(props) {
+  const navigate = useNavigate();
   const [alert, setAlert] = useState({ title: '', message: '', severity: '' });
+  const [redirect, setRedirect] = useState(false);
+
 
   const clearAlert = () => {
     setAlert({ title: '', message: '', severity: '' });
@@ -33,10 +36,15 @@ export default function Register() {
     )
     .then(() => {
       setAlert({ title: 'Successful registration', message: "Done", severity: "success" });
+      setRedirect(true);
     })
     .catch(err => {
       setAlert({ title: 'Error during register', message: err.response.data.message, severity: "error" });
     })
+
+    if (redirect) {
+      navigate(RouteNames.PROFILE);
+    }
   };
 
   return (

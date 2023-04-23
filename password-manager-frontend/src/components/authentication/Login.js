@@ -10,11 +10,15 @@ import Typography from '@mui/material/Typography';
 import { Content } from '../app/Content';
 import { RouteNames } from '../../routes/RouteNames';
 import AuthService from '../../services/AuthService';
+import { useNavigate } from 'react-router-dom';
 
 
-export default function Login() {
+
+export default function Login(props) {
+  const navigate = useNavigate()
 
   const [alert, setAlert] = useState({ title: '', message: '', severity: '' });
+  const [redirect, setRedirect] = useState(false);
 
   const clearAlert = () => {
     setAlert({ title: '', message: '', severity: '' });
@@ -29,10 +33,16 @@ export default function Login() {
     )
     .then(() => {
       setAlert({ title: 'Successful login', message: "Done", severity: "success" });
+      setRedirect(true);
     })
     .catch(err => {
+      console.log(err);
       setAlert({ title: 'Error during login', message: err.response.data.message, severity: "error" });
     })
+
+    if (redirect) {
+      navigate(RouteNames.PROFILE);
+    }
   };
 
   return (

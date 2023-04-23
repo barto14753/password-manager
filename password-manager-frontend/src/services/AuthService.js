@@ -1,5 +1,7 @@
+import { useDispatch } from "react-redux";
 import { apiPost } from "../api/api";
 import { POST_LOGIN, POST_PASSWORD_RESET, POST_REGISTER } from "../api/urls";
+import { LOGIN_SUCCESS, LOGOUT, REGISTER_SUCCESS } from "../reducers/types";
 
 const AuthService = {
     register(email, first_name, last_name, password) {
@@ -11,8 +13,10 @@ const AuthService = {
           }
         return apiPost(POST_REGISTER, body)
             .then(response => {
-                    localStorage.setItem('access_token', response['accessToken']);
-                    localStorage.setItem('refresh_token', response['refreshToken']);
+                    localStorage.setItem('user', JSON.stringify(response['user']));
+                    sessionStorage.setItem('access_token', response['accessToken']);
+                    sessionStorage.setItem('refresh_token', response['refreshToken']);
+                    useDispatch()({ type: REGISTER_SUCCESS, payload: response });
                 }
             )
     },
@@ -24,8 +28,10 @@ const AuthService = {
           }
         return apiPost(POST_LOGIN, body)
             .then(response => {
-                    localStorage.setItem('access_token', response['accessToken']);
-                    localStorage.setItem('refresh_token', response['refreshToken']);
+                    localStorage.setItem('user', JSON.stringify(response['user']));
+                    sessionStorage.setItem('access_token', response['accessToken']);
+                    sessionStorage.setItem('refresh_token', response['refreshToken']);
+                    useDispatch()({ type: LOGIN_SUCCESS, payload: response });
                 }
             )
     },
@@ -44,7 +50,13 @@ const AuthService = {
             .catch(err => {
                 throw err
             });
-    }
+    },
+}
+
+export function Logout() {
+    sessionStorage.removeItem("access_token");
+    sessionStorage.removeItem("refresh_token");
+    useDispatch({ type: LOGOUT });
 }
 
 export default AuthService;

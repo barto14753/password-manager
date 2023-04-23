@@ -9,9 +9,7 @@ import { Content } from '../app/Content';
 import AuthService from '../../services/AuthService';
 
 
-
-export default function PasswordReset() {
-
+export default function PasswordReset(props) {
     const [alert, setAlert] = useState({ title: '', message: '', severity: '' });
 
     const clearAlert = () => {
@@ -29,6 +27,7 @@ export default function PasswordReset() {
         )
         .then(() => {
             setAlert({ title: 'Successful password reset', message: "Done", severity: "success" });
+
         })
         .catch(err => {
             setAlert({ title: 'Error during password reset', message: err.response.data.message, severity: "error" });

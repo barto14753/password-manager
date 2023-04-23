@@ -7,6 +7,7 @@ import com.example.passwordmanager.dto.request.LoginRequest;
 import com.example.passwordmanager.dto.request.PasswordResetRequest;
 import com.example.passwordmanager.dto.request.RegisterRequest;
 import com.example.passwordmanager.dto.response.AuthenticationResponse;
+import com.example.passwordmanager.dto.util.BasicUser;
 import com.example.passwordmanager.exception.*;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
@@ -51,6 +52,7 @@ public class TokenService {
         String refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN, jwtConfig.getRefreshTokenExp());
         log.info("User " + user.getEmail() + " successfully registered");
         return AuthenticationResponse.builder()
+                .user(new BasicUser(user))
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -69,6 +71,7 @@ public class TokenService {
         String refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN, jwtConfig.getRefreshTokenExp());
         log.info("User " + user.getEmail() + " logged in");
         return AuthenticationResponse.builder()
+                .user(new BasicUser(user))
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -98,6 +101,7 @@ public class TokenService {
         String accessToken = jwtService.generateToken(user, TokenType.ACCESS_TOKEN, jwtConfig.getAccessTokenExp());
         String newRefreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN, jwtConfig.getRefreshTokenExp());
         return AuthenticationResponse.builder()
+                .user(new BasicUser(user))
                 .accessToken(accessToken)
                 .refreshToken(newRefreshToken)
                 .build();

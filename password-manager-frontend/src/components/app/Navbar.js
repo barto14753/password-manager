@@ -12,10 +12,11 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { LockOpen } from '@mui/icons-material';
 import { RouteNames } from '../../routes/RouteNames';
 import { ButtonGroup } from '@mui/material';
+import { connect } from 'react-redux'
+import { Logout } from '../../services/AuthService';
 
-
-
-function ResponsiveAppBar() {
+function ResponsiveAppBar(props) {
+  const user = props.user;
   const pages = [
     {
       key: 1,
@@ -26,7 +27,13 @@ function ResponsiveAppBar() {
       key: 2,
       name: 'Contact',
       route: RouteNames.HOME
-    }
+    },
+    // ...(user ? 
+    //   {
+    //     key: 3,
+    //     name: 'Profile',
+    //     route: RouteNames.PROFILE
+    //   } : {}),
   ];
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -133,14 +140,28 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
+            {user ? 
             <ButtonGroup variant="contained" color="secondary" aria-label="outlined button group">
-            <Button href={RouteNames.REGISTER}>Sign up</Button>
-            <Button href={RouteNames.LOGIN}>Sign in</Button>
-          </ButtonGroup>
+              <Button onClick={() => Logout()}>Logout</Button> 
+            </ButtonGroup>
+            :
+            <ButtonGroup variant="contained" color="secondary" aria-label="outlined button group">
+              <Button href={RouteNames.REGISTER}>Sign up</Button>
+              <Button href={RouteNames.LOGIN}>Sign in</Button> 
+            </ButtonGroup>
+            }
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+
+function mapStateToProps(state) {
+  const { isLoggedIn, user } = state.auth
+  return {
+    isLoggedIn,
+    user
+  }
+}
+export default connect(mapStateToProps)(ResponsiveAppBar)
