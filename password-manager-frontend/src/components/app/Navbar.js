@@ -14,8 +14,13 @@ import { RouteNames } from '../../routes/RouteNames';
 import { ButtonGroup } from '@mui/material';
 import { connect } from 'react-redux'
 import { Logout } from '../../services/AuthService';
+import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+
 
 function ResponsiveAppBar(props) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = props.user;
   const pages = [
     {
@@ -142,7 +147,7 @@ function ResponsiveAppBar(props) {
           <Box sx={{ flexGrow: 0 }}>
             {user ? 
             <ButtonGroup variant="contained" color="secondary" aria-label="outlined button group">
-              <Button onClick={() => Logout()}>Logout</Button> 
+              <Button onClick={() => Logout(dispatch)}>Logout</Button>
             </ButtonGroup>
             :
             <ButtonGroup variant="contained" color="secondary" aria-label="outlined button group">

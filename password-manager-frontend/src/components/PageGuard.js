@@ -16,6 +16,7 @@ function PageGuard(props) {
     if (isLoggedIn && role === PageAccessType.NOT_LOGGED_IN) {
       navigate(RouteNames.PROFILE)
     } else if (!isLoggedIn && role === PageAccessType.LOGGED_IN) {
+        console.log(isLoggedIn)
         navigate(RouteNames.LOGIN)
     }
   }, [navigate, role, isLoggedIn, user])

@@ -8,8 +8,7 @@ function AuthVerification(props) {
 
   useEffect(() => {
     if (props.user && !JSON.parse(sessionStorage.getItem('user'))) {
-      // props.dispatch(logout(navigate))
-      logout(props.dispatch);
+      props.dispatch(logout(navigate))
     } else if (props.user) {
       const decodedJwt = parseJwt(props.user.access_token)
 

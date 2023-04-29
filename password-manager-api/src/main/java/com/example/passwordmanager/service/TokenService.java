@@ -82,7 +82,7 @@ public class TokenService {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new AuthenticationException(ExceptionMessage.WRONG_HEADER);
         }
-        String refreshToken = authorizationHeader.substring("Bearer ".length());;
+        String refreshToken = authorizationHeader.substring("Bearer ".length());
         String email = jwtService.extractUsername(refreshToken);
 
         User user = repository.findByEmail(email)
