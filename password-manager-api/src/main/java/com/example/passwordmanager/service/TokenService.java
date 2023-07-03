@@ -7,6 +7,7 @@ import com.example.passwordmanager.dto.request.LoginRequest;
 import com.example.passwordmanager.dto.request.PasswordResetRequest;
 import com.example.passwordmanager.dto.request.RegisterRequest;
 import com.example.passwordmanager.dto.response.AuthenticationResponse;
+import com.example.passwordmanager.dto.util.BasicUser;
 import com.example.passwordmanager.exception.*;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
@@ -14,7 +15,6 @@ import com.example.passwordmanager.repo.user.UserRepo;
 import com.example.passwordmanager.validator.PasswordValidator;
 import com.example.passwordmanager.validator.RegisterValidator;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -51,6 +51,7 @@ public class TokenService {
         String refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN, jwtConfig.getRefreshTokenExp());
         log.info("User " + user.getEmail() + " successfully registered");
         return AuthenticationResponse.builder()
+                .user(new BasicUser(user))
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -69,17 +70,18 @@ public class TokenService {
         String refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN, jwtConfig.getRefreshTokenExp());
         log.info("User " + user.getEmail() + " logged in");
         return AuthenticationResponse.builder()
+                .user(new BasicUser(user))
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    public AuthenticationResponse refresh(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public AuthenticationResponse refresh(HttpServletRequest request) throws AuthenticationException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new AuthenticationException(ExceptionMessage.WRONG_HEADER);
         }
-        String refreshToken = authorizationHeader.substring("Bearer ".length());;
+        String refreshToken = authorizationHeader.substring("Bearer ".length());
         String email = jwtService.extractUsername(refreshToken);
 
         User user = repository.findByEmail(email)
@@ -98,6 +100,7 @@ public class TokenService {
         String accessToken = jwtService.generateToken(user, TokenType.ACCESS_TOKEN, jwtConfig.getAccessTokenExp());
         String newRefreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN, jwtConfig.getRefreshTokenExp());
         return AuthenticationResponse.builder()
+                .user(new BasicUser(user))
                 .accessToken(accessToken)
                 .refreshToken(newRefreshToken)
                 .build();

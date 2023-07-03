@@ -1,36 +1,44 @@
+import { useDispatch } from "react-redux";
 import { apiPost } from "../api/api";
 import { POST_LOGIN, POST_PASSWORD_RESET, POST_REGISTER } from "../api/urls";
+import { LOGIN_SUCCESS, LOGOUT, REGISTER_SUCCESS } from "../reducers/types";
+import { RouteNames } from "../routes/RouteNames";
+
 
 const AuthService = {
-    register(email, first_name, last_name, password) {
+    register(dispatch, email, first_name, last_name, password) {
         const body = {
             email: email,
-            first_name: first_name,
-            last_name: last_name,
+            firstName: first_name,
+            lastName: last_name,
             password: password,
           }
         return apiPost(POST_REGISTER, body)
             .then(response => {
-                    localStorage.setItem('access_token', response['accessToken']);
-                    localStorage.setItem('refresh_token', response['refreshToken']);
+                    localStorage.setItem('user', JSON.stringify(response['user']));
+                    sessionStorage.setItem('access_token', response['accessToken']);
+                    sessionStorage.setItem('refresh_token', response['refreshToken']);
+                    dispatch({ type: REGISTER_SUCCESS, payload: response });
                 }
             )
     },
 
-    login(email, password) {
+    login(dispatch, email, password) {
         const body = {
             email: email,
-            password: password,
-          }
+            password: password
+        }
         return apiPost(POST_LOGIN, body)
             .then(response => {
-                    localStorage.setItem('access_token', response['accessToken']);
-                    localStorage.setItem('refresh_token', response['refreshToken']);
+                    localStorage.setItem('user', JSON.stringify(response['user']));
+                    sessionStorage.setItem('access_token', response['accessToken']);
+                    sessionStorage.setItem('refresh_token', response['refreshToken']);
+                    dispatch({ type: LOGIN_SUCCESS, payload: response });
                 }
             )
     },
 
-    resetPassword(email, oldPassword, newPassword) {
+    resetPassword(dispatch, email, oldPassword, newPassword) {
         const body = {
             email: email,
             oldPassword: oldPassword,
@@ -44,7 +52,15 @@ const AuthService = {
             .catch(err => {
                 throw err
             });
-    }
+    },
+}
+
+export function Logout(dispatch, navigate) {
+    sessionStorage.removeItem("access_token");
+    sessionStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
+    dispatch({ type: LOGOUT });
+    navigate(RouteNames.HOME);
 }
 
 export default AuthService;

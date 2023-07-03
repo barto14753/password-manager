@@ -57,11 +57,11 @@ public class AuthenticationController {
     @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<AuthenticationResponse> refresh(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-        return ResponseEntity.ok(service.refresh(request, response));
+        return ResponseEntity.ok(service.refresh(request));
     }
 
     @PostMapping("/password-reset")
-    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest request)
+    public ResponseEntity<Object> resetPassword(@RequestBody PasswordResetRequest request)
             throws AuthenticationException, PasswordException, PasswordResetException {
         service.resetPassword(request);
         return ResponseEntity.ok().build();

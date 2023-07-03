@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "../components/main/Home";
 import PageNotFound from "../components/main/PageNotFound";
+import PageGuard from "../components/PageGuard";
+import { PageAccessType } from "../utils/pageAccessType";
 
 
 export default function HomeRoute() {
@@ -9,7 +11,9 @@ export default function HomeRoute() {
         <Route
           path={''}
           element={
-            <Home />
+            <PageGuard role={PageAccessType.ALL}>
+              <Home />
+            </PageGuard>
           }
         />
   

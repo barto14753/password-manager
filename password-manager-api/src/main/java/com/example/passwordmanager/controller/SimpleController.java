@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class SimpleController {
     private final SimpleService simpleService;
 
-    @GetMapping("/user")
-    ResponseEntity<?> helloUser() {
+    @GetMapping("/hello")
+    ResponseEntity<String> helloUser() {
         return ResponseEntity.ok().body(simpleService.hello());
     }
 
     @GetMapping("/admin")
-    ResponseEntity<?> bye() {
+    ResponseEntity<String> bye() {
         return ResponseEntity.ok().body("Hello admin");
     }
 }

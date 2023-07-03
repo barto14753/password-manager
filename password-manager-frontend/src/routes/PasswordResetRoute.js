@@ -1,6 +1,8 @@
 import PasswordReset from "../components/authentication/PasswordReset";
 import PageNotFound from "../components/main/PageNotFound";
 import { Route, Routes } from "react-router-dom";
+import PageGuard from "../components/PageGuard";
+import { PageAccessType } from "../utils/pageAccessType";
 
 export default function PasswordResetRoute() {
     return (
@@ -8,7 +10,9 @@ export default function PasswordResetRoute() {
         <Route
           path={''}
           element={
-            <PasswordReset />
+            <PageGuard role={PageAccessType.NOT_LOGGED_IN}>
+              <PasswordReset />
+            </PageGuard>
           }
         />
   

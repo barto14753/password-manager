@@ -13,11 +13,16 @@ import Container from '@mui/material/Container';
 import { Content } from '../app/Content';
 import { RouteNames } from '../../routes/RouteNames';
 import AuthService from '../../services/AuthService';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
 
 
-export default function Register() {
-
+export default function Register(props) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [alert, setAlert] = useState({ title: '', message: '', severity: '' });
+  const [redirect, setRedirect] = useState(false);
+
 
   const clearAlert = () => {
     setAlert({ title: '', message: '', severity: '' });
@@ -25,18 +30,31 @@ export default function Register() {
 
   const handleSubmit = async (event) => {
     const form = event.target.form;
+    const data = new FormData(form);
+    const email = data.get("email");
+    const first_name = data.get("firstName");
+    const last_name = data.get("lastName");
+    const password = data.get("password");
+
     AuthService.register(
-      form[4].value,
-      form[0].value,
-      form[2].value,
-      form[6].value
+      dispatch,
+      email,
+      first_name,
+      last_name,
+      password
     )
     .then(() => {
-      setAlert({ title: 'Successful registration', message: "Done", severity: "success" });
+        setAlert({ title: 'Successful registration', message: "Done", severity: "success" });
+        setRedirect(true);
     })
     .catch(err => {
-      setAlert({ title: 'Error during register', message: err.response.data.message, severity: "error" });
+        console.log(err);
+        setAlert({ title: 'Error during register', message: err.response.data.message, severity: "error" });
     })
+
+    if (redirect) {
+      navigate(RouteNames.PROFILE);
+    }
   };
 
   return (
