@@ -15,7 +15,6 @@ import com.example.passwordmanager.repo.user.UserRepo;
 import com.example.passwordmanager.validator.PasswordValidator;
 import com.example.passwordmanager.validator.RegisterValidator;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -77,7 +76,7 @@ public class TokenService {
                 .build();
     }
 
-    public AuthenticationResponse refresh(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public AuthenticationResponse refresh(HttpServletRequest request) throws AuthenticationException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new AuthenticationException(ExceptionMessage.WRONG_HEADER);

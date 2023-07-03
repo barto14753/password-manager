@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { apiPost } from "../api/api";
 import { POST_LOGIN, POST_PASSWORD_RESET, POST_REGISTER } from "../api/urls";
 import { LOGIN_SUCCESS, LOGOUT, REGISTER_SUCCESS } from "../reducers/types";
+import { RouteNames } from "../routes/RouteNames";
 
 
 const AuthService = {
@@ -25,8 +26,8 @@ const AuthService = {
     login(dispatch, email, password) {
         const body = {
             email: email,
-            password: password,
-          }
+            password: password
+        }
         return apiPost(POST_LOGIN, body)
             .then(response => {
                     localStorage.setItem('user', JSON.stringify(response['user']));
@@ -54,11 +55,12 @@ const AuthService = {
     },
 }
 
-export function Logout(dispatch) {
+export function Logout(dispatch, navigate) {
     sessionStorage.removeItem("access_token");
     sessionStorage.removeItem("refresh_token");
     localStorage.removeItem("user");
-    dispatch(dispatch, { type: LOGOUT });
+    dispatch({ type: LOGOUT });
+    navigate(RouteNames.HOME);
 }
 
 export default AuthService;

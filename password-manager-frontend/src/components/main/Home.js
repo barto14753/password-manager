@@ -27,7 +27,7 @@ function Home() {
         <div>
           <Grid mt={5}>
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Easy and safe password management
+              Password management made easy
             </Typography>
             <Typography variant="h6" align="center" color="textSecondary" paragraph>
               Purpose of this app is to make Your password management safe, easy and accessible from anywhere!

@@ -6,4 +6,4 @@ export const parseJwt = (jwt) => {
   }
 }
 
-export const isUser = (user) => (user ? parseJwt(user.access_token) : false)
+export const isUser = (access_token) => (access_token ? parseJwt(access_token) : false)

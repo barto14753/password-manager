@@ -11,25 +11,30 @@ import { Content } from '../app/Content';
 import { RouteNames } from '../../routes/RouteNames';
 import AuthService from '../../services/AuthService';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 
 
 export default function Login(props) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [alert, setAlert] = useState({ title: '', message: '', severity: '' });
   const [redirect, setRedirect] = useState(false);
 
   const clearAlert = () => {
     setAlert({ title: '', message: '', severity: '' });
-}
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    let email = data.get('email')
+    let password = data.get('password')
     AuthService.login(
-      data.get('email'), 
-      data.get('password')
+      dispatch,
+      email,
+      password
     )
     .then(() => {
       setAlert({ title: 'Successful login', message: "Done", severity: "success" });

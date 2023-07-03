@@ -45,12 +45,16 @@ export default function Register(props) {
     )
     .then(() => {
         setAlert({ title: 'Successful registration', message: "Done", severity: "success" });
-        navigate(RouteNames.PROFILE)
+        setRedirect(true);
     })
     .catch(err => {
         console.log(err);
         setAlert({ title: 'Error during register', message: err.response.data.message, severity: "error" });
     })
+
+    if (redirect) {
+      navigate(RouteNames.PROFILE);
+    }
   };
 
   return (

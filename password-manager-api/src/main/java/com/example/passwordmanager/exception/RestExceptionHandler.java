@@ -1,5 +1,6 @@
 package com.example.passwordmanager.exception;
 
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.ServletException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -24,6 +25,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Object> handleUsernameNotFound(UsernameNotFoundException ex) {
         return handleExceptionWithStatusCode(NOT_FOUND, ex);
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<Object> handleSignatureException(SignatureException ex) {
+        return handleExceptionWithStatusCode(FORBIDDEN, ex);
     }
 
     @ExceptionHandler(IOException.class)

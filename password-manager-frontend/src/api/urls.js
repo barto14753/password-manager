@@ -5,6 +5,9 @@ export const POST_LOGIN = BASE_URL + '/auth/login';
 export const POST_REGISTER = BASE_URL + '/auth/register';
 export const POST_PASSWORD_RESET = BASE_URL + '/auth/password-reset';
 
+// PROFILE
+export const GET_PROFILE = BASE_URL + '/profile';
+export const PATCH_PROFILE = BASE_URL + '/profile';
 
 export const GET_USER_TMP = BASE_URL + '/user';
 
