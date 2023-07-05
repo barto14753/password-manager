@@ -4,7 +4,7 @@ import com.example.passwordmanager.dto.request.LoginRequest;
 import com.example.passwordmanager.dto.request.PasswordResetRequest;
 import com.example.passwordmanager.dto.request.RegisterRequest;
 import com.example.passwordmanager.dto.response.AuthenticationResponse;
-import com.example.passwordmanager.exception.AuthenticationException;
+import com.example.passwordmanager.exception.AuthException;
 import com.example.passwordmanager.exception.PasswordException;
 import com.example.passwordmanager.exception.PasswordResetException;
 import com.example.passwordmanager.exception.RegisterException;
@@ -50,19 +50,19 @@ public class AuthenticationController {
             description = "Invalid user credentials",
             content = @Content(schema = @Schema(hidden = true))
     )
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request) throws AuthenticationException {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request) throws AuthException {
         return ResponseEntity.ok(service.login(request));
     }
     @PostMapping("/refresh")
     @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<AuthenticationResponse> refresh(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException {
+            throws AuthException {
         return ResponseEntity.ok(service.refresh(request));
     }
 
     @PostMapping("/password-reset")
     public ResponseEntity<Object> resetPassword(@RequestBody PasswordResetRequest request)
-            throws AuthenticationException, PasswordException, PasswordResetException {
+            throws AuthException, PasswordException, PasswordResetException {
         service.resetPassword(request);
         return ResponseEntity.ok().build();
     }

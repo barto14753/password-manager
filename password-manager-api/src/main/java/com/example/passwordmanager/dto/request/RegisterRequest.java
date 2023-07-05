@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest {
     @Schema(description = "First name", type = "string", example = "John")
-    private String firstName;
+    private String firstname;
 
     @Schema(description = "Last name", type = "string", example = "Smith")
-    private String lastName;
+    private String lastname;
 
     @Schema(description = "Email address which needs meet some requirements", type = "string", example = "email@domain.com")
     private String email;
