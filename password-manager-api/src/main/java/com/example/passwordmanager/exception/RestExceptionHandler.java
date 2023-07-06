@@ -47,8 +47,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(AuthenticationException ex) {
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<Object> handleDateTimeParseException(AuthException ex) {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 

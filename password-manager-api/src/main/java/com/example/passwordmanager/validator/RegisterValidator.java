@@ -24,8 +24,8 @@ public class RegisterValidator {
         String password = registerRequest.getPassword();
 
         validateEmailRegex(email);
-        validateEmailIsUnique(email);
         validatePassword(password);
+        validateEmailIsUnique(email);
     }
 
     private void validatePassword(String password) throws PasswordException {

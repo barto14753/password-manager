@@ -4,6 +4,8 @@ public class ExceptionMessage {
     private ExceptionMessage() {}
 
     // AUTHENTICATION EXCEPTIONS
+    public static final String AUTH_FAILED = "Authentication failed";
+
     public static String getUserNotExistMsg(String email) {
         return "User with email " + email + " not exist";
     }
