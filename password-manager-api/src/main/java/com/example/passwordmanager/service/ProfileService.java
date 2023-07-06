@@ -3,6 +3,8 @@ package com.example.passwordmanager.service;
 import com.example.passwordmanager.dto.request.PatchProfileRequest;
 import com.example.passwordmanager.dto.response.ProfileResponse;
 import com.example.passwordmanager.dto.util.BasicUser;
+import com.example.passwordmanager.exception.AuthException;
+import com.example.passwordmanager.exception.ExceptionMessage;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repo.user.UserRepo;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,9 @@ public class ProfileService {
     public ProfileResponse getProfile() {
         // Retrieve email from auth
         Authentication auth = authService.getAuthentication();
+        if (auth == null) {
+            throw new AuthException(ExceptionMessage.AUTH_FAILED);
+        }
         String email = auth.getName();
 
         // Find user
@@ -32,7 +37,7 @@ public class ProfileService {
 
         // If user not found throw exception
         if (user.isEmpty()) {
-            String errorMsg = "User " + email + " not found";
+            String errorMsg = ExceptionMessage.getUserNotExistMsg(email);
             log.info(errorMsg);
             throw new UsernameNotFoundException(errorMsg);
         }
@@ -47,6 +52,9 @@ public class ProfileService {
     public ProfileResponse patchProfile(PatchProfileRequest patchProfileRequest) {
         // Retrieve email from auth
         Authentication auth = authService.getAuthentication();
+        if (auth == null) {
+            throw new AuthException(ExceptionMessage.AUTH_FAILED);
+        }
         String email = auth.getName();
 
         // Find user
@@ -54,7 +62,7 @@ public class ProfileService {
 
         // If user not found throw exception
         if (optionalUser.isEmpty()) {
-            String errorMsg = "User " + email + " not found";
+            String errorMsg = ExceptionMessage.getUserNotExistMsg(email);
             log.info(errorMsg);
             throw new UsernameNotFoundException(errorMsg);
         }

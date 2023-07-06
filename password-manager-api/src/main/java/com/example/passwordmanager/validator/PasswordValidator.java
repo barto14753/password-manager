@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PasswordValidator {
     private static final Integer MIN_CHARACTERS = 8;
-    private static final Integer MAX_CHARACTERS = 20;
+    private static final Integer MAX_CHARACTERS = 128;
     private static final Integer MIN_LOWERCASE_CHARACTERS  = 1;
     private static final Integer MAX_LOWERCASE_CHARACTERS = MAX_CHARACTERS;
     private static final Integer MIN_UPPERCASE_CHARACTERS = 1;
