@@ -34,7 +34,7 @@ jobs:
       - name: Build and unit test
         run: |
           cd password-manager-api
-          mvn --batch-mode --update-snapshots package
+          mvn --batch-mode --update-snapshots package test
 
       - name: Perform Scan
         uses: ShiftLeftSecurity/scan-action@master
