@@ -30,12 +30,11 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      
-      - name: Change direcotry to API
-        run: cd password-manager-api
 
       - name: Build and unit test
-        run: mvn --batch-mode --update-snapshots package
+        run: |
+          cd password-manager-api
+          mvn --batch-mode --update-snapshots package
 
       - name: Perform Scan
         uses: ShiftLeftSecurity/scan-action@master
