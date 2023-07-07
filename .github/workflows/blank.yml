@@ -35,7 +35,7 @@ jobs:
         run: |
           cd password-manager-api
           mvn --quiet --batch-mode --update-snapshots package
-          mvn --quiet test
+          mvn test
 
 
       - name: Perform Scan
