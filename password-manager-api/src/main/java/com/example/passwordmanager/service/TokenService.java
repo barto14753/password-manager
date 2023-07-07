@@ -15,6 +15,7 @@ import com.example.passwordmanager.repo.user.UserRepo;
 import com.example.passwordmanager.validator.PasswordValidator;
 import com.example.passwordmanager.validator.RegisterValidator;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +30,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class TokenService {
     private final UserRepo repository;
     private final RegisterValidator registerValidator;
@@ -130,8 +132,12 @@ public class TokenService {
             log.info("Password reset for " + email + " failed, because oldPassword = newPassword");
             throw new PasswordResetException("Password reset for " + email + " failed, because oldPassword = newPassword");
         }
+
         passwordValidator.validate(newPassword);
-        user.setPassword(newPassword);
+        String newPasswordEncrypted = passwordEncoder.encode(newPassword);
+        user.setPassword(newPasswordEncrypted);
+        repository.save(user);
+
         log.info("Password for " + email + " was reset");
     }
 }

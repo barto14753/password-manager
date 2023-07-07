@@ -7,9 +7,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Content } from '../app/Content';
 import AuthService from '../../services/AuthService';
+import { useDispatch } from 'react-redux';
 
 
 export default function PasswordReset(props) {
+    const dispatch = useDispatch()
     const [alert, setAlert] = useState({ title: '', message: '', severity: '' });
 
     const clearAlert = () => {
@@ -21,6 +23,7 @@ export default function PasswordReset(props) {
         const data = new FormData(event.currentTarget);
 
         AuthService.resetPassword(
+            dispatch,
             data.get('email'), 
             data.get('old-password'), 
             data.get('new-password')

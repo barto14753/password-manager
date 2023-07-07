@@ -341,6 +341,7 @@ class TokenServiceTest {
         User user = mockUser();
         String oldPassword = "oldPassword";
         String newPassword = "newPassword";
+        String newPasswordEncoded = passwordEncoder.encode(newPassword);
         PasswordResetRequest passwordResetRequest = mockPasswordResetRequest(user.getEmail(), oldPassword, newPassword);
         mockUserRepo(user);
         mockAuthenticationManager(user.getEmail());
@@ -350,7 +351,7 @@ class TokenServiceTest {
         tokenService.resetPassword(passwordResetRequest);
 
         // Assert
-        assertEquals(newPassword, user.getPassword());
+        assertEquals(newPasswordEncoded, user.getPassword());
     }
 
     @Test
