@@ -9,10 +9,11 @@ const AuthService = {
     register(dispatch, email, first_name, last_name, password) {
         const body = {
             email: email,
-            firstName: first_name,
-            lastName: last_name,
+            firstname: first_name,
+            lastname: last_name,
             password: password,
           }
+        console.log(body)
         return apiPost(POST_REGISTER, body)
             .then(response => {
                     localStorage.setItem('user', JSON.stringify(response['user']));

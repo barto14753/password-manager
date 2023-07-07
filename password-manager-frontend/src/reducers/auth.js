@@ -29,7 +29,7 @@ export default function useAppSelector(state = initialState, action) {
       case REGISTER_SUCCESS:
           return {
               ...state,
-              isLoggedIn: false,
+              isLoggedIn: true,
               user: payload.user,
               accessToken: payload.accessToken,
               refreshToken: payload.refreshToken,
