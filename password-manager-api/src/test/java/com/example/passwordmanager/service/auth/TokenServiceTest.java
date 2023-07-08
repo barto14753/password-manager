@@ -1,16 +1,17 @@
-package com.example.passwordmanager.service;
+package com.example.passwordmanager.service.auth;
 
 import com.example.passwordmanager.config.jwt.JwtConfig;
 import com.example.passwordmanager.config.jwt.JwtService;
 import com.example.passwordmanager.config.jwt.TokenType;
-import com.example.passwordmanager.dto.request.LoginRequest;
-import com.example.passwordmanager.dto.request.PasswordResetRequest;
-import com.example.passwordmanager.dto.request.RegisterRequest;
-import com.example.passwordmanager.dto.response.AuthenticationResponse;
+import com.example.passwordmanager.dto.request.auth.LoginRequest;
+import com.example.passwordmanager.dto.request.auth.PasswordResetRequest;
+import com.example.passwordmanager.dto.request.auth.RegisterRequest;
+import com.example.passwordmanager.dto.response.auth.AuthenticationResponse;
 import com.example.passwordmanager.exception.*;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repo.user.UserRepo;
+import com.example.passwordmanager.service.auth.TokenService;
 import com.example.passwordmanager.validator.PasswordValidator;
 import com.example.passwordmanager.validator.RegisterValidator;
 import jakarta.servlet.http.HttpServletRequest;

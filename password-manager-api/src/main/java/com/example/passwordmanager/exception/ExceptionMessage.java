@@ -66,5 +66,12 @@ public class ExceptionMessage {
         return MAX_CHARACTERS_MSG + count + " special characters";
     }
 
+    // PASSWORD EXCEPTIONS
+    public static String getPasswordWithIdNotFound(Long id) {
+        return "Password with id " + id + " not found";
+    }
 
+    public static String getPasswordWithIdOwnedByNotFound(String email, Long id) {
+        return "Password with id " + id + " owned by " + email + " not found";
+    }
 }

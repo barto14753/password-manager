@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,6 +33,9 @@ public class User implements UserDetails {
     private Role role;
 
     private Boolean isLocked;
+
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Password> passwords = new ArrayList<>();
 
     public Long getId() {
         return id;

@@ -1,7 +1,5 @@
 package com.example.passwordmanager.service;
 
-import com.example.passwordmanager.config.jwt.JwtConfig;
-import com.example.passwordmanager.config.jwt.JwtService;
 import com.example.passwordmanager.dto.request.PatchProfileRequest;
 import com.example.passwordmanager.dto.response.ProfileResponse;
 import com.example.passwordmanager.exception.AuthException;
@@ -9,12 +7,13 @@ import com.example.passwordmanager.exception.ExceptionMessage;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repo.user.UserRepo;
+import com.example.passwordmanager.service.auth.AuthenticationService;
+import com.example.passwordmanager.validator.AuthValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
@@ -30,7 +29,7 @@ class ProfileServiceTest {
     private AuthenticationService authenticationService;
 
     @Mock
-    private Authentication authentication;
+    private AuthValidator authValidator;
 
     @InjectMocks
     private ProfileService profileService;
@@ -58,9 +57,8 @@ class ProfileServiceTest {
                 .build();
     }
 
-    private void mockAuthenticationService(String email) {
-        when(authentication.getName()).thenReturn(email);
-        when(authenticationService.getAuthentication()).thenReturn(authentication);
+    private void mockAuthentication(User user) {
+        when(authValidator.validateUser()).thenReturn(user);
     }
 
     private void mockUserRepo(User user) {
@@ -72,7 +70,7 @@ class ProfileServiceTest {
     void testGetProfile() {
         // Arrange
         User user = mockUser();
-        mockAuthenticationService(user.getEmail());
+        mockAuthentication(user);
         mockUserRepo(user);
 
         // Act
@@ -88,22 +86,20 @@ class ProfileServiceTest {
     @Test
     void testGetProfileWhenNullAuthentication() {
         // Arrange
-        when(authenticationService.getAuthentication()).thenReturn(null);
+        when(authValidator.validateUser()).thenThrow(AuthException.class);
 
         // Assert
         Exception exception = assertThrows(AuthException.class, () -> profileService.getProfile());
-        assertEquals(ExceptionMessage.AUTH_FAILED, exception.getMessage());
     }
 
     @Test
     void testGetProfileWhenUserNotFound() {
         // Arrange
         User user = mockUser();
-        mockAuthenticationService(user.getEmail());
+        when(authValidator.validateUser()).thenThrow(UsernameNotFoundException.class);
 
         // Assert
         Exception exception = assertThrows(UsernameNotFoundException.class, () -> profileService.getProfile());
-        assertEquals(ExceptionMessage.getUserNotExistMsg(user.getEmail()), exception.getMessage());
     }
 
     @Test
@@ -111,7 +107,7 @@ class ProfileServiceTest {
         // Arrange
         User user = mockUser();
         PatchProfileRequest patchProfileRequest = mockPatchProfileRequest("newFirstName", "newLastName");
-        mockAuthenticationService(user.getEmail());
+        mockAuthentication(user);
         mockUserRepo(user);
 
         // Act
@@ -129,7 +125,7 @@ class ProfileServiceTest {
         // Arrange
         User user = mockUser();
         PatchProfileRequest patchProfileRequest = mockPatchProfileRequest("newFirstName", null);
-        mockAuthenticationService(user.getEmail());
+        mockAuthentication(user);
         mockUserRepo(user);
 
         // Act
@@ -147,7 +143,7 @@ class ProfileServiceTest {
         // Arrange
         User user = mockUser();
         PatchProfileRequest patchProfileRequest = mockPatchProfileRequest(null, null);
-        mockAuthenticationService(user.getEmail());
+        mockAuthentication(user);
         mockUserRepo(user);
 
         // Act
@@ -165,7 +161,7 @@ class ProfileServiceTest {
         // Arrange
         User user = mockUser();
         PatchProfileRequest patchProfileRequest = mockPatchProfileRequest(user.getFirstname(), user.getLastname());
-        mockAuthenticationService(user.getEmail());
+        mockAuthentication(user);
         mockUserRepo(user);
 
         // Act
@@ -181,11 +177,10 @@ class ProfileServiceTest {
     @Test
     void testPatchProfileWhenNullAuthentication() {
         // Arrange
-        when(authenticationService.getAuthentication()).thenReturn(null);
+        when(authValidator.validateUser()).thenThrow(AuthException.class);
 
         // Assert
         Exception exception = assertThrows(AuthException.class, () -> profileService.patchProfile(null));
-        assertEquals(ExceptionMessage.AUTH_FAILED, exception.getMessage());
     }
 
     @Test
@@ -193,10 +188,9 @@ class ProfileServiceTest {
         // Arrange
         User user = mockUser();
         PatchProfileRequest patchProfileRequest = mockPatchProfileRequest("newFirstName", "newLastName");
-        mockAuthenticationService(user.getEmail());
+        when(authValidator.validateUser()).thenThrow(UsernameNotFoundException.class);
 
         // Assert
         Exception exception = assertThrows(UsernameNotFoundException.class, () -> profileService.patchProfile(patchProfileRequest));
-        assertEquals(ExceptionMessage.getUserNotExistMsg(user.getEmail()), exception.getMessage());
     }
 }

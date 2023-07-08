@@ -1,4 +1,4 @@
-package com.example.passwordmanager.dto.request;
+package com.example.passwordmanager.dto.request.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
-    @Schema(description = "Email address", type = "string", example = "email@domain.com")
+    @Schema(description = "Email address", type = "string", example = "user@domain.com")
     String email;
 
     @Schema(description = "Your secret passcode", type = "string", example = "Password!123")
