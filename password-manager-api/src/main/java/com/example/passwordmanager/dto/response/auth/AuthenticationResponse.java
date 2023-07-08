@@ -1,4 +1,4 @@
-package com.example.passwordmanager.dto.response;
+package com.example.passwordmanager.dto.response.auth;
 
 import com.example.passwordmanager.dto.util.BasicUser;
 import lombok.AllArgsConstructor;

@@ -1,14 +1,14 @@
 package com.example.passwordmanager.controller;
 
-import com.example.passwordmanager.dto.request.LoginRequest;
-import com.example.passwordmanager.dto.request.PasswordResetRequest;
-import com.example.passwordmanager.dto.request.RegisterRequest;
-import com.example.passwordmanager.dto.response.AuthenticationResponse;
+import com.example.passwordmanager.dto.request.auth.LoginRequest;
+import com.example.passwordmanager.dto.request.auth.PasswordResetRequest;
+import com.example.passwordmanager.dto.request.auth.RegisterRequest;
+import com.example.passwordmanager.dto.response.auth.AuthenticationResponse;
 import com.example.passwordmanager.exception.AuthException;
 import com.example.passwordmanager.exception.PasswordException;
 import com.example.passwordmanager.exception.PasswordResetException;
 import com.example.passwordmanager.exception.RegisterException;
-import com.example.passwordmanager.service.TokenService;
+import com.example.passwordmanager.service.auth.TokenService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -1,4 +1,4 @@
-package com.example.passwordmanager.dto.request;
+package com.example.passwordmanager.dto.request.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PasswordResetRequest {
-    @Schema(description = "Email address of account", type = "string", example = "email@domain.com")
+    @Schema(description = "Email address of account", type = "string", example = "user@domain.com")
     private String email;
     @Schema(description = "Old password", type = "string", example = "Password!123")
     private String oldPassword;

@@ -3,18 +3,14 @@ package com.example.passwordmanager.service;
 import com.example.passwordmanager.dto.request.PatchProfileRequest;
 import com.example.passwordmanager.dto.response.ProfileResponse;
 import com.example.passwordmanager.dto.util.BasicUser;
-import com.example.passwordmanager.exception.AuthException;
-import com.example.passwordmanager.exception.ExceptionMessage;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repo.user.UserRepo;
+import com.example.passwordmanager.service.auth.AuthenticationService;
+import com.example.passwordmanager.validator.AuthValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -23,64 +19,33 @@ import java.util.Optional;
 public class ProfileService {
     private final UserRepo userRepo;
     private final AuthenticationService authService;
+    private final AuthValidator authValidator;
 
     public ProfileResponse getProfile() {
-        // Retrieve email from auth
-        Authentication auth = authService.getAuthentication();
-        if (auth == null) {
-            throw new AuthException(ExceptionMessage.AUTH_FAILED);
-        }
-        String email = auth.getName();
-
-        // Find user
-        Optional<User> user = userRepo.findByEmail(email);
-
-        // If user not found throw exception
-        if (user.isEmpty()) {
-            String errorMsg = ExceptionMessage.getUserNotExistMsg(email);
-            log.info(errorMsg);
-            throw new UsernameNotFoundException(errorMsg);
-        }
+        User user = authValidator.validateUser();
 
         // Build and return user profile
-        log.info("Get profile for  " + email);
+        log.info("Get profile for  " + user.getEmail());
         return ProfileResponse.builder()
-                .profile(new BasicUser(user.get()))
+                .profile(new BasicUser(user))
                 .build();
     }
 
     public ProfileResponse patchProfile(PatchProfileRequest patchProfileRequest) {
-        // Retrieve email from auth
-        Authentication auth = authService.getAuthentication();
-        if (auth == null) {
-            throw new AuthException(ExceptionMessage.AUTH_FAILED);
-        }
-        String email = auth.getName();
-
-        // Find user
-        Optional<User> optionalUser = userRepo.findByEmail(email);
-
-        // If user not found throw exception
-        if (optionalUser.isEmpty()) {
-            String errorMsg = ExceptionMessage.getUserNotExistMsg(email);
-            log.info(errorMsg);
-            throw new UsernameNotFoundException(errorMsg);
-        }
-
-        User user = optionalUser.get();
-        log.info("Set profile for " + email);
+        User user = authValidator.validateUser();
+        log.info("Set profile for " + user.getEmail());
 
         // If new first name provided update it
         String newFirstName = patchProfileRequest.getFirstName();
         if (newFirstName != null) {
-            log.info("Set for " + email + " firstName=" + newFirstName);
+            log.info("Set for " + user.getEmail() + " firstName=" + newFirstName);
             user.setFirstname(newFirstName);
         }
 
         // If new last name provided update it
         String newLastName = patchProfileRequest.getLastName();
         if (newLastName != null) {
-            log.info("Set for " + email + " lastName=" + newLastName);
+            log.info("Set for " + user.getEmail() + " lastName=" + newLastName);
             user.setLastname(newLastName);
         }
 

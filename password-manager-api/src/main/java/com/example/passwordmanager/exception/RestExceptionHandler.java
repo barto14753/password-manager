@@ -67,6 +67,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 
+    @ExceptionHandler(PasswordCreationException.class)
+    public ResponseEntity<Object> handleDateTimeParseException(PasswordCreationException ex) {
+        return handleExceptionWithStatusCode(BAD_REQUEST, ex);
+    }
+
     @ExceptionHandler(PasswordResetException.class)
     public ResponseEntity<Object> handleDateTimeParseException(PasswordResetException ex) {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);

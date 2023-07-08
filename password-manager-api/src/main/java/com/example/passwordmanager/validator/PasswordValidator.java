@@ -1,6 +1,6 @@
 package com.example.passwordmanager.validator;
 
-import com.example.passwordmanager.exception.ExceptionMessage;
+import com.example.passwordmanager.exception.ExceptionMessages;
 import com.example.passwordmanager.exception.PasswordException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +44,8 @@ public class PasswordValidator {
                 password.length(),
                 MIN_CHARACTERS,
                 MAX_CHARACTERS,
-                new PasswordException(ExceptionMessage.getPasswordMinCharactersMsg(MIN_CHARACTERS)),
-                new PasswordException(ExceptionMessage.getPasswordMaxCharactersMsg(MAX_CHARACTERS)));
+                new PasswordException(ExceptionMessages.getPasswordMinCharactersMsg(MIN_CHARACTERS)),
+                new PasswordException(ExceptionMessages.getPasswordMaxCharactersMsg(MAX_CHARACTERS)));
     }
 
     private void validateLowerCaseCharactersCount(String password) throws PasswordException {
@@ -53,8 +53,8 @@ public class PasswordValidator {
                 password.chars().filter(Character::isLowerCase).count(),
                 MIN_LOWERCASE_CHARACTERS,
                 MAX_LOWERCASE_CHARACTERS,
-                new PasswordException(ExceptionMessage.getPasswordMinLowerCaseCharactersMsg(MIN_LOWERCASE_CHARACTERS)),
-                new PasswordException(ExceptionMessage.getPasswordMaxLowerCaseCharactersMsg(MAX_LOWERCASE_CHARACTERS)));
+                new PasswordException(ExceptionMessages.getPasswordMinLowerCaseCharactersMsg(MIN_LOWERCASE_CHARACTERS)),
+                new PasswordException(ExceptionMessages.getPasswordMaxLowerCaseCharactersMsg(MAX_LOWERCASE_CHARACTERS)));
     }
 
     private void validateUpperCaseCharactersCount(String password) throws PasswordException {
@@ -62,8 +62,8 @@ public class PasswordValidator {
                 password.chars().filter(Character::isUpperCase).count(),
                 MIN_UPPERCASE_CHARACTERS,
                 MAX_UPPERCASE_CHARACTERS,
-                new PasswordException(ExceptionMessage.getPasswordMinUpperCaseCharactersMsg(MIN_UPPERCASE_CHARACTERS)),
-                new PasswordException(ExceptionMessage.getPasswordMaxUpperCaseCharactersMsg(MAX_UPPERCASE_CHARACTERS)));
+                new PasswordException(ExceptionMessages.getPasswordMinUpperCaseCharactersMsg(MIN_UPPERCASE_CHARACTERS)),
+                new PasswordException(ExceptionMessages.getPasswordMaxUpperCaseCharactersMsg(MAX_UPPERCASE_CHARACTERS)));
     }
 
     private void validateNumericCharactersCount(String password) throws PasswordException {
@@ -71,8 +71,8 @@ public class PasswordValidator {
                 password.chars().filter(Character::isDigit).count(),
                 MIN_NUMERIC_CHARACTERS,
                 MAX_NUMERIC_CHARACTERS,
-                new PasswordException(ExceptionMessage.getPasswordMinNumericCharactersMsg(MIN_NUMERIC_CHARACTERS)),
-                new PasswordException(ExceptionMessage.getPasswordMaxNumericCharactersMsg(MAX_NUMERIC_CHARACTERS)));
+                new PasswordException(ExceptionMessages.getPasswordMinNumericCharactersMsg(MIN_NUMERIC_CHARACTERS)),
+                new PasswordException(ExceptionMessages.getPasswordMaxNumericCharactersMsg(MAX_NUMERIC_CHARACTERS)));
     }
 
     private void validateSpecialCharactersCount(String password) throws PasswordException {
@@ -80,7 +80,7 @@ public class PasswordValidator {
                 password.replaceAll("[A-Za-z0-9\\s]", "").length(),
                 MIN_SPECIAL_CHARACTERS,
                 MAX_SPECIAL_CHARACTERS,
-                new PasswordException(ExceptionMessage.getPasswordMinSpecialCharactersMsg(MIN_SPECIAL_CHARACTERS)),
-                new PasswordException(ExceptionMessage.getPasswordMaxSpecialCharactersMsg(MAX_SPECIAL_CHARACTERS)));
+                new PasswordException(ExceptionMessages.getPasswordMinSpecialCharactersMsg(MIN_SPECIAL_CHARACTERS)),
+                new PasswordException(ExceptionMessages.getPasswordMaxSpecialCharactersMsg(MAX_SPECIAL_CHARACTERS)));
     }
 }

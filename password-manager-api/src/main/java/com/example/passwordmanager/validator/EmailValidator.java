@@ -1,6 +1,6 @@
 package com.example.passwordmanager.validator;
 
-import com.example.passwordmanager.exception.ExceptionMessage;
+import com.example.passwordmanager.exception.ExceptionMessages;
 import com.example.passwordmanager.exception.RegisterException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class EmailValidator {
     public void validate(String email) throws RegisterException {
         if (regexes.stream().anyMatch(regex -> !Pattern.compile(regex).matcher(email).matches())) {
             log.info("Invalid registration with email: " + email);
-            throw new RegisterException(ExceptionMessage.getEmailInvalidMsg(email));
+            throw new RegisterException(ExceptionMessages.getEmailInvalidMsg(email));
         }
     }
 }

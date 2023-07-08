@@ -1,12 +1,12 @@
-package com.example.passwordmanager.service;
+package com.example.passwordmanager.service.auth;
 
 import com.example.passwordmanager.config.jwt.JwtConfig;
 import com.example.passwordmanager.config.jwt.JwtService;
 import com.example.passwordmanager.config.jwt.TokenType;
-import com.example.passwordmanager.dto.request.LoginRequest;
-import com.example.passwordmanager.dto.request.PasswordResetRequest;
-import com.example.passwordmanager.dto.request.RegisterRequest;
-import com.example.passwordmanager.dto.response.AuthenticationResponse;
+import com.example.passwordmanager.dto.request.auth.LoginRequest;
+import com.example.passwordmanager.dto.request.auth.PasswordResetRequest;
+import com.example.passwordmanager.dto.request.auth.RegisterRequest;
+import com.example.passwordmanager.dto.response.auth.AuthenticationResponse;
 import com.example.passwordmanager.exception.*;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
@@ -245,7 +245,7 @@ class TokenServiceTest {
 
         // Assert
         Exception exception = assertThrows(AuthException.class, () -> tokenService.login(loginRequest));
-        assertEquals(ExceptionMessage.getUserNotExistMsg(loginRequest.getEmail()), exception.getMessage());
+        assertEquals(ExceptionMessages.getUserNotExistMsg(loginRequest.getEmail()), exception.getMessage());
     }
     @Test
     void testRefreshToken() {
@@ -284,7 +284,7 @@ class TokenServiceTest {
 
         // Assert
         Exception exception = assertThrows(AuthException.class, () -> tokenService.refresh(httpRequest));
-        assertEquals(ExceptionMessage.WRONG_HEADER, exception.getMessage());
+        assertEquals(ExceptionMessages.WRONG_HEADER, exception.getMessage());
     }
 
     @Test
@@ -299,7 +299,7 @@ class TokenServiceTest {
 
         // Assert
         Exception exception = assertThrows(AuthException.class, () -> tokenService.refresh(httpRequest));
-        assertEquals(ExceptionMessage.getUserNotExistMsg(user.getEmail()), exception.getMessage());
+        assertEquals(ExceptionMessages.getUserNotExistMsg(user.getEmail()), exception.getMessage());
     }
 
     @Test
@@ -315,7 +315,7 @@ class TokenServiceTest {
 
         // Assert
         Exception exception = assertThrows(AuthException.class, () -> tokenService.refresh(httpRequest));
-        assertEquals(ExceptionMessage.REFRESH_TOKEN_EXPIRED, exception.getMessage());
+        assertEquals(ExceptionMessages.REFRESH_TOKEN_EXPIRED, exception.getMessage());
     }
 
     @Test
@@ -332,7 +332,7 @@ class TokenServiceTest {
 
         // Assert
         Exception exception = assertThrows(AuthException.class, () -> tokenService.refresh(httpRequest));
-        assertEquals(ExceptionMessage.WRONG_TOKEN_TYPE_FOR_REFRESH, exception.getMessage());
+        assertEquals(ExceptionMessages.WRONG_TOKEN_TYPE_FOR_REFRESH, exception.getMessage());
     }
 
     @Test
@@ -364,7 +364,7 @@ class TokenServiceTest {
 
         // Assert
         Exception exception = assertThrows(AuthException.class, () -> tokenService.resetPassword(passwordResetRequest));
-        assertEquals(ExceptionMessage.getUserNotExistMsg(user.getEmail()), exception.getMessage());
+        assertEquals(ExceptionMessages.getUserNotExistMsg(user.getEmail()), exception.getMessage());
     }
 
     @Test

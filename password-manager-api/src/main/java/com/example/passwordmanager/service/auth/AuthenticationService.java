@@ -1,4 +1,4 @@
-package com.example.passwordmanager.service;
+package com.example.passwordmanager.service.auth;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
