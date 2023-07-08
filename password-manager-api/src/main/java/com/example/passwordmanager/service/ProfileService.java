@@ -3,8 +3,6 @@ package com.example.passwordmanager.service;
 import com.example.passwordmanager.dto.request.PatchProfileRequest;
 import com.example.passwordmanager.dto.response.ProfileResponse;
 import com.example.passwordmanager.dto.util.BasicUser;
-import com.example.passwordmanager.exception.AuthException;
-import com.example.passwordmanager.exception.ExceptionMessage;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repo.user.UserRepo;
 import com.example.passwordmanager.service.auth.AuthenticationService;
@@ -12,11 +10,7 @@ import com.example.passwordmanager.validator.AuthValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @Slf4j

@@ -1,6 +1,6 @@
 package com.example.passwordmanager.validator;
 
-import com.example.passwordmanager.exception.ExceptionMessage;
+import com.example.passwordmanager.exception.ExceptionMessages;
 import com.example.passwordmanager.exception.RegisterException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,6 +48,6 @@ class EmailValidatorTest {
     void testEmailValidateFailure(String wrongEmail) {
         // Assert
         Exception exception = assertThrows(RegisterException.class, () -> emailValidator.validate(wrongEmail));
-        assertEquals(ExceptionMessage.getEmailInvalidMsg(wrongEmail), exception.getMessage());
+        assertEquals(ExceptionMessages.getEmailInvalidMsg(wrongEmail), exception.getMessage());
     }
 }

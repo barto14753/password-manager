@@ -1,7 +1,7 @@
 package com.example.passwordmanager.validator;
 
 import com.example.passwordmanager.exception.AuthException;
-import com.example.passwordmanager.exception.ExceptionMessage;
+import com.example.passwordmanager.exception.ExceptionMessages;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repo.user.UserRepo;
 import com.example.passwordmanager.service.auth.AuthenticationService;
@@ -24,7 +24,7 @@ public class AuthValidator {
         // Retrieve email from auth
         Authentication auth = authService.getAuthentication();
         if (auth == null) {
-            throw new AuthException(ExceptionMessage.AUTH_FAILED);
+            throw new AuthException(ExceptionMessages.AUTH_FAILED);
         }
         String email = auth.getName();
 
@@ -33,7 +33,7 @@ public class AuthValidator {
 
         // If user not found throw exception
         if (user.isEmpty()) {
-            String errorMsg = ExceptionMessage.getUserNotExistMsg(email);
+            String errorMsg = ExceptionMessages.getUserNotExistMsg(email);
             log.info(errorMsg);
             throw new UsernameNotFoundException(errorMsg);
         }

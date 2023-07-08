@@ -1,7 +1,10 @@
 package com.example.passwordmanager.controller.password;
 
+import com.example.passwordmanager.dto.request.password.CreatePasswordRequest;
+import com.example.passwordmanager.dto.response.password.CreatePasswordResponse;
 import com.example.passwordmanager.dto.response.password.GetAllPasswordsResponse;
 import com.example.passwordmanager.dto.response.password.GetPasswordResponse;
+import com.example.passwordmanager.exception.PasswordCreationException;
 import com.example.passwordmanager.exception.PasswordException;
 import com.example.passwordmanager.service.password.PasswordService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -26,5 +29,18 @@ public class PasswordController {
     @GetMapping("/all")
     ResponseEntity<GetAllPasswordsResponse> getAllPasswords() {
         return ResponseEntity.ok().body(passwordService.getAllPasswordsResponse());
+    }
+
+    @PostMapping
+    ResponseEntity<CreatePasswordResponse> createPassword(@RequestBody CreatePasswordRequest request)
+            throws PasswordCreationException {
+        return ResponseEntity.ok().body(passwordService.createPasswordResponse(request));
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Object> deletePassword(@PathVariable Long id)
+            throws PasswordException {
+        passwordService.deletePassword(id);
+        return ResponseEntity.ok().build();
     }
 }

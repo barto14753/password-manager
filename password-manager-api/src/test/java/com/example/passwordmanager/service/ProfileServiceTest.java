@@ -3,7 +3,6 @@ package com.example.passwordmanager.service;
 import com.example.passwordmanager.dto.request.PatchProfileRequest;
 import com.example.passwordmanager.dto.response.ProfileResponse;
 import com.example.passwordmanager.exception.AuthException;
-import com.example.passwordmanager.exception.ExceptionMessage;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repo.user.UserRepo;

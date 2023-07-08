@@ -1,7 +1,7 @@
 package com.example.passwordmanager.validator;
 
 import com.example.passwordmanager.dto.request.auth.RegisterRequest;
-import com.example.passwordmanager.exception.ExceptionMessage;
+import com.example.passwordmanager.exception.ExceptionMessages;
 import com.example.passwordmanager.exception.PasswordException;
 import com.example.passwordmanager.exception.RegisterException;
 import com.example.passwordmanager.repo.user.UserRepo;
@@ -38,7 +38,7 @@ public class RegisterValidator {
 
     private void validateEmailIsUnique(String email) throws RegisterException {
         if (userRepo.findByEmail(email).isPresent()) {
-            throw new RegisterException(ExceptionMessage.getEmailTakenMsg(email));
+            throw new RegisterException(ExceptionMessages.getEmailTakenMsg(email));
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.example.passwordmanager.exception;
 
-public class ExceptionMessage {
-    private ExceptionMessage() {}
+import com.example.passwordmanager.exception.util.ExceptionMessage;
+
+public class ExceptionMessages {
+    private ExceptionMessages() {}
 
     // AUTHENTICATION EXCEPTIONS
     public static final String AUTH_FAILED = "Authentication failed";
@@ -71,7 +73,18 @@ public class ExceptionMessage {
         return "Password with id " + id + " not found";
     }
 
-    public static String getPasswordWithIdOwnedByNotFound(String email, Long id) {
-        return "Password with id " + id + " owned by " + email + " not found";
+    public static ExceptionMessage getPasswordWithIdOwnedByNotFound(String email, Long id) {
+        return ExceptionMessage.builder()
+                .logMessage("Password with id " + id + " owned by " + email + " not found")
+                .message(getPasswordWithIdNotFound(id))
+                .build();
+    }
+
+    public static ExceptionMessage getPasswordNameCannotBeNull(String email) {
+        return ExceptionMessage.builder()
+                .logMessage(email + " tried to create null value password")
+                .message("Password cannot be null")
+                .build();
+
     }
 }
