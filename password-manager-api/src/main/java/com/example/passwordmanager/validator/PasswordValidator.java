@@ -1,7 +1,7 @@
 package com.example.passwordmanager.validator;
 
 import com.example.passwordmanager.exception.ExceptionMessages;
-import com.example.passwordmanager.exception.PasswordException;
+import com.example.passwordmanager.exception.password.PasswordException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

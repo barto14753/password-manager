@@ -6,8 +6,9 @@ import com.example.passwordmanager.dto.response.password.GetAllPasswordsResponse
 import com.example.passwordmanager.dto.response.password.GetPasswordResponse;
 import com.example.passwordmanager.dto.util.BasicPassword;
 import com.example.passwordmanager.exception.ExceptionMessages;
-import com.example.passwordmanager.exception.PasswordCreationException;
-import com.example.passwordmanager.exception.PasswordException;
+import com.example.passwordmanager.exception.password.PasswordCreationException;
+import com.example.passwordmanager.exception.password.PasswordException;
+import com.example.passwordmanager.exception.password.PasswordOwnershipException;
 import com.example.passwordmanager.exception.util.ExceptionMessage;
 import com.example.passwordmanager.model.Password;
 import com.example.passwordmanager.model.User;
@@ -57,7 +58,6 @@ public class PasswordService {
         return CreatePasswordResponse.builder()
                 .password(new BasicPassword(password))
                 .build();
-
     }
 
     public void deletePassword(Long id) throws PasswordException {
@@ -83,7 +83,7 @@ public class PasswordService {
         if (!password.getOwner().equals(owner)) {
             ExceptionMessage msg = ExceptionMessages.getPasswordWithIdOwnedByNotFound(owner.getEmail(), id);
             log.info(msg.getLogMessage());
-            throw new PasswordException(msg.getMessage());
+            throw new PasswordOwnershipException(msg.getMessage());
         }
         return password;
     }

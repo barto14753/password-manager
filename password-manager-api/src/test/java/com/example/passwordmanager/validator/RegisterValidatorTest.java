@@ -1,7 +1,7 @@
 package com.example.passwordmanager.validator;
 
 import com.example.passwordmanager.dto.request.auth.RegisterRequest;
-import com.example.passwordmanager.exception.PasswordException;
+import com.example.passwordmanager.exception.password.PasswordException;
 import com.example.passwordmanager.exception.RegisterException;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
