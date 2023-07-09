@@ -8,6 +8,8 @@ import com.example.passwordmanager.dto.request.auth.PasswordResetRequest;
 import com.example.passwordmanager.dto.request.auth.RegisterRequest;
 import com.example.passwordmanager.dto.response.auth.AuthenticationResponse;
 import com.example.passwordmanager.exception.*;
+import com.example.passwordmanager.exception.password.PasswordException;
+import com.example.passwordmanager.exception.password.PasswordResetException;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repo.user.UserRepo;

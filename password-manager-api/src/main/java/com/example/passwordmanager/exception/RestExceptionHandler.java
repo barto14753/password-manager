@@ -1,5 +1,9 @@
 package com.example.passwordmanager.exception;
 
+import com.example.passwordmanager.exception.password.PasswordCreationException;
+import com.example.passwordmanager.exception.password.PasswordException;
+import com.example.passwordmanager.exception.password.PasswordOwnershipException;
+import com.example.passwordmanager.exception.password.PasswordResetException;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.ServletException;
 import org.springframework.core.Ordered;
@@ -43,37 +47,42 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ParseException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(ParseException ex) {
+    public ResponseEntity<Object> handleParseException(ParseException ex) {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 
     @ExceptionHandler(AuthException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(AuthException ex) {
+    public ResponseEntity<Object> handleAuthException(AuthException ex) {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(BadCredentialsException ex) {
+    public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 
     @ExceptionHandler(RegisterException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(RegisterException ex) {
+    public ResponseEntity<Object> handleRegisterException(RegisterException ex) {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 
     @ExceptionHandler(PasswordException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(PasswordException ex) {
+    public ResponseEntity<Object> handlePasswordException(PasswordException ex) {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 
     @ExceptionHandler(PasswordCreationException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(PasswordCreationException ex) {
+    public ResponseEntity<Object> handlePasswordCreationException(PasswordCreationException ex) {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 
+    @ExceptionHandler(PasswordOwnershipException.class)
+    public ResponseEntity<Object> handlePasswordOwnershipException(PasswordOwnershipException ex) {
+        return handleExceptionWithStatusCode(FORBIDDEN, ex);
+    }
+
     @ExceptionHandler(PasswordResetException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(PasswordResetException ex) {
+    public ResponseEntity<Object> handlePasswordResetException(PasswordResetException ex) {
         return handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 

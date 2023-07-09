@@ -6,7 +6,6 @@ import com.example.passwordmanager.exception.AuthException;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
 import com.example.passwordmanager.repo.user.UserRepo;
-import com.example.passwordmanager.service.auth.AuthenticationService;
 import com.example.passwordmanager.validator.AuthValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,9 +22,6 @@ import static org.mockito.Mockito.when;
 class ProfileServiceTest {
     @Mock
     private UserRepo repository;
-
-    @Mock
-    private AuthenticationService authenticationService;
 
     @Mock
     private AuthValidator authValidator;
