@@ -16,11 +16,15 @@ public class BasicPassword {
     private String name;
     private String value;
     private Long ownerId;
+    private Long created;
+    private Long modified;
 
     public BasicPassword(Password password) {
         this.id = password.getId();
         this.name = password.getName();
         this.value = password.getValue();
         this.ownerId = password.getOwner().getId();
+        this.created = password.getCreated();
+        this.modified = password.getModified();
     }
 }

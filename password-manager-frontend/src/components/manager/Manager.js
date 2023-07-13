@@ -14,6 +14,7 @@ import {
     Typography,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
+import PasswordRow from "./PasswordRow";
 
 function createData(id, name, created, modified, versions) {
     return { id, name, created, modified, versions };
@@ -98,12 +99,7 @@ function Manager(props) {
                                 </TableHead>
                                 <TableBody>
                                     {rows.map((row) => (
-                                        <TableRow key={row.id}>
-                                            <TableCell>{row.name}</TableCell>
-                                            <TableCell>{row.created}</TableCell>
-                                            <TableCell>{row.modified}</TableCell>
-                                            <TableCell>{row.versions}</TableCell>
-                                        </TableRow>
+                                        <PasswordRow data={row} />
                                     ))}
                                 </TableBody>
                             </Table>

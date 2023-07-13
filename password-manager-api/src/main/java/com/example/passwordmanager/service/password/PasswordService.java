@@ -94,11 +94,13 @@ public class PasswordService {
             log.info(msg.getLogMessage());
             throw new PasswordCreationException(msg.getMessage());
         }
-
+        Long creationTime = System.currentTimeMillis();
         Password password = Password.builder()
                 .name(name)
                 .value(passwordEncoder.encode(value))
                 .owner(owner)
+                .created(creationTime)
+                .modified(creationTime)
                 .build();
         passwordRepo.save(password);
         return password;
