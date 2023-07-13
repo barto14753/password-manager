@@ -26,4 +26,10 @@ public class Password {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "_user")
     private User owner;
+
+    @Column(name = "created", nullable = false)
+    private Long created;
+
+    @Column(name = "modified", nullable = false)
+    private Long modified;
 }

@@ -37,6 +37,8 @@ public class MockData implements CommandLineRunner {
                 .name(name)
                 .value(passwordEncoder.encode(value))
                 .owner(owner)
+                .created(System.currentTimeMillis())
+                .modified(System.currentTimeMillis())
                 .build();
         passwordRepo.save(password);
         return password;

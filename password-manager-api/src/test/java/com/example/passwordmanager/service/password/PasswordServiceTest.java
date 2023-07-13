@@ -240,6 +240,8 @@ class PasswordServiceTest {
         assertEquals(response.getPassword().getName(), name);
         assertEquals(response.getPassword().getValue(), encodedValue);
         assertEquals(response.getPassword().getOwnerId(), owner.getId());
+        assertNotNull(response.getPassword().getCreated());
+        assertNotNull(response.getPassword().getModified());
     }
 
     @Test
