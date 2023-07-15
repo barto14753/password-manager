@@ -25,7 +25,7 @@ Password manager contains of:
 - [ ]  Want to keep password history
 - [ ]  Want to edit password history
 - [ ]  Want to set expiration date of password
-- [ ]  Want to see when password was created/lately modified and how many versions?
+- [ ]  Want to see when password was created/lately modified and how many versions
 - [ ]  Want to rollback to some version of password
 - [ ]  Want to be notified when password expire and have been notified about it until it is changed or expiration is modified/deleted
 - [ ]  Want to share password with somebody, link and someone need to pass secret code to see it
