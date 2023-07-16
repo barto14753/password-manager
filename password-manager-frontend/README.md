@@ -4,14 +4,11 @@
 [![](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)]()
 [![](https://img.shields.io/badge/Material%20UI-007FFF?style=for-the-badge&logo=mui&logoColor=white)]()
 
-
 React app with MaterialUI components
-
 
 ## Run Locally
 
 Clone the project
-
 
 Go to the project directory
 
@@ -32,4 +29,3 @@ Start the server
 ```
 
 Open localhost:3000 in browser
-

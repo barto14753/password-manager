@@ -49,7 +49,7 @@ public class MockData implements CommandLineRunner {
         User user1 = this.createUser("user1@domain.com", "Joe", "Doe", "Password!123");
         User user2 = this.createUser("user2@domain.com", "Joe", "Doe", "Password!123");
 
-        Password password1 = createPassword("Password1", "Password!123", user);
-        Password password2 = createPassword("Password2", "Password!1234", user);
+        Password password1 = createPassword("Google", "Password!123", user);
+        Password password2 = createPassword("Email", "Password!1234", user);
     }
 }

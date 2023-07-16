@@ -7,15 +7,15 @@ import AppRoutes from "../../routes/AppRoutes";
 import Footer from "./Footer";
 
 function App() {
-    return (
-        <ThemeProvider theme={theme}>
-            <BrowserRouter>
-                <Navbar />
-                <AppRoutes />
-                <Footer />
-            </BrowserRouter>
-        </ThemeProvider>
-    );
+	return (
+		<ThemeProvider theme={theme}>
+			<BrowserRouter>
+				<Navbar />
+				<AppRoutes />
+				<Footer />
+			</BrowserRouter>
+		</ThemeProvider>
+	);
 }
 
 export default App;
