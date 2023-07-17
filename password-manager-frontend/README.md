@@ -6,26 +6,37 @@
 
 React app with MaterialUI components
 
-## Run Locally
+## Run with docker
+Build password-manager-frontend image
+```bash
+docker build -t password-manager-frontend .
+```
+
+Run docker-compose to create setup
+```bash
+docker-compose up
+```
+
+## Run locally
 
 Clone the project
 
 Go to the project directory
 
 ```bash
-  cd password-manager-frontend
+cd password-manager-frontend
 ```
 
 Install dependencies
 
 ```bash
-  npm install
+npm install
 ```
 
 Start the server
 
 ```bash
-  npm start
+npm start
 ```
 
 Open localhost:3000 in browser

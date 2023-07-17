@@ -16,48 +16,17 @@ To build password-manager-api docker image execute
  mvn clean install docker:build
 ```
 
-## Setup
+## Run with docker
+Build password-manager-api image
+```bash
+mvn clean install docker:build
+```
 Open password-manager-api directory
 ```bash
- cd password-manager-api
+cd password-manager-api
 ```
 
 Run docker-compose to create setup
 ```bash
- docker-compose up
+docker-compose up
 ```
-
-```yml
-version: '3.7'
-services:
-  API:
-    image: 'password-manager-api'
-    build:
-      context: .
-    ports:
-      - "8080:8080"
-    depends_on:
-      database:
-          condition: service_healthy
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/password-manager-db
-      - SPRING_DATASOURCE_USERNAME=app
-      - SPRING_DATASOURCE_PASSWORD=password
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
-
-  database:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: password-manager-db
-    healthcheck:
-      test: pg_isready -U app
-
-```
-
-
-
-
