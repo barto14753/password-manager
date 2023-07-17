@@ -14,6 +14,12 @@ Password manager contains of:
 * Spring backend application
 * PostgreSQL database 
 
+## Setup
+Run docker-compose to create setup
+```bash
+docker-compose up
+```
+
 ## Features
 - [X]  Want to create account
 - [X]  Want to login
