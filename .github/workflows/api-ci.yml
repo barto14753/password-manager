@@ -1,0 +1,60 @@
+# Continous integration for API
+
+name: API-CI
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main", "develop"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  # Build api package
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Build and unit test
+        run: |
+          cd password-manager-api
+          mvn --quiet --batch-mode --update-snapshots package
+
+  # Run unit tests
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Build and unit test
+        run: |
+          cd password-manager-api
+          mvn test
+
+  # Scan source code for credentials and vulnerabilities
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Perform Scan
+        uses: ShiftLeftSecurity/scan-action@master
+        with:
+          type: "credscan,java,depscan"
+          path: "password-manager-api"
