@@ -16,6 +16,7 @@ import {
 import Paper from "@mui/material/Paper";
 import PasswordRow from "./PasswordRow";
 import PasswordService from "../../services/PasswordService";
+import PasswordCreationDialog from "./PasswordCreationDialog";
 
 function Manager(props) {
 	const [passwords, setPasswords] = useState(null);
@@ -92,6 +93,7 @@ function Manager(props) {
 						</Paper>
 					</Grid>
 				</Grid>
+				<PasswordCreationDialog />
 			</Container>
 		</Content>
 	);

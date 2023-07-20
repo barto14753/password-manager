@@ -11,3 +11,4 @@ export const PATCH_PROFILE = BASE_URL + "/profile";
 
 // PASSWORD
 export const GET_PASSWORDS = BASE_URL + "/password/all";
+export const CREATE_PASSWORD = BASE_URL + "/password";

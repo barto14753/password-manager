@@ -14,6 +14,23 @@ export function apiPost(url, body) {
 		});
 }
 
+export function apiAuthorizedPost(url, body) {
+	const accessToken = sessionStorage.getItem("access_token");
+	const config = {
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
+			"Content-Type": "application/json",
+			withCredentials: true,
+		},
+	};
+	return axios
+		.post(url, JSON.stringify(body), config)
+		.then((response) => response.data)
+		.catch((error) => {
+			throw error;
+		});
+}
+
 export function apiGet(url, params) {
 	const accessToken = sessionStorage.getItem("access_token");
 	const headers = {
