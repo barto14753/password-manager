@@ -1,5 +1,6 @@
 package com.example.passwordmanager.service.password;
 
+import com.example.passwordmanager.crypto.Encrypter;
 import com.example.passwordmanager.dto.request.password.CreatePasswordRequest;
 import com.example.passwordmanager.dto.response.password.CreatePasswordResponse;
 import com.example.passwordmanager.dto.response.password.GetAllPasswordsResponse;
@@ -23,8 +24,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ class PasswordServiceTest {
     @Mock
     private AuthValidator authValidator;
     @Mock
-    private PasswordEncoder passwordEncoder;
+    private Encrypter passwordEncrypter;
     @InjectMocks
     private PasswordService passwordService;
 
@@ -65,11 +66,11 @@ class PasswordServiceTest {
                 .build();
     }
 
-    private Password mockPassword(Long id, User owner) {
+    private Password mockPassword(Long id, User owner, String encryptedValue) {
         return Password.builder()
                 .id(id)
                 .name("Password")
-                .value("Password!123")
+                .encryptedValue(encryptedValue)
                 .owner(owner)
                 .build();
     }
@@ -86,24 +87,28 @@ class PasswordServiceTest {
         when(passwordRepo.findAllByOwner(owner)).thenReturn(passwords);
     }
 
-    private void mockPasswordEncoder(String password, String encodedPassword) {
-        when(passwordEncoder.encode(password)).thenReturn(encodedPassword);
+    private void mockPasswordEncrypter(String password, String encryptedPassword) throws GeneralSecurityException {
+        when(passwordEncrypter.encrypt(password)).thenReturn(encryptedPassword);
+        when(passwordEncrypter.decrypt(encryptedPassword)).thenReturn(password);
     }
 
     @Test
-    void testGetPasswordResponse() throws PasswordException {
+    void testGetPasswordResponse() throws PasswordException, GeneralSecurityException {
         // Arrange
         User owner = mockUser();
-        Password password = mockPassword(1L, owner);
+        String plainPassword = "Password!123";
+        String encryptedPassword = "abcdefghij";
+        Password password = mockPassword(1L, owner, encryptedPassword);
         mockAuthValidator(owner);
         mockPasswordRepoFindById(password.getId(), password);
+        mockPasswordEncrypter(plainPassword, encryptedPassword);
 
         // Act
         GetPasswordResponse response = passwordService.getPasswordResponse(password.getId());
 
         // Assert
         assertNotNull(response);
-        assertEquals(response.getPassword(), new BasicPassword(password));
+        assertEquals(response.getPassword(), new BasicPassword(password, plainPassword));
 
     }
 
@@ -111,7 +116,9 @@ class PasswordServiceTest {
     void testGetPasswordResponseWhenAuthFail() {
         // Arrange
         User owner = mockUser();
-        Password password = mockPassword(1L, owner);
+        String plainPassword = "Password!123";
+        String encryptedPassword = "abcdefghij";
+        Password password = mockPassword(1L, owner, encryptedPassword);
         when(authValidator.validateUser()).thenThrow(AuthException.class);
         mockPasswordRepoFindById(password.getId(), password);
 
@@ -124,7 +131,9 @@ class PasswordServiceTest {
     void testGetPasswordResponseWhenUserNotFound() {
         // Arrange
         User owner = mockUser();
-        Password password = mockPassword(1L, owner);
+        String plainPassword = "Password!123";
+        String encryptedPassword = "abcdefghij";
+        Password password = mockPassword(1L, owner, encryptedPassword);
         when(authValidator.validateUser()).thenThrow(UsernameNotFoundException.class);
         mockPasswordRepoFindById(password.getId(), password);
 
@@ -136,7 +145,9 @@ class PasswordServiceTest {
     void testGetPasswordResponseWhenPasswordNotFound() {
         // Arrange
         User owner = mockUser();
-        Password password = mockPassword(1L, owner);
+        String plainPassword = "Password!123";
+        String encryptedPassword = "abcdefghij";
+        Password password = mockPassword(1L, owner, encryptedPassword);
         mockAuthValidator(owner);
         mockPasswordRepoFindById(password.getId(), null);
 
@@ -151,8 +162,10 @@ class PasswordServiceTest {
         User requester = mockUser();
         User owner = mockUser();
         owner.setEmail("owner");
+        String plainPassword = "Password!123";
+        String encryptedPassword = "abcdefghij";
 
-        Password password = mockPassword(1L, owner);
+        Password password = mockPassword(1L, owner, encryptedPassword);
         mockAuthValidator(requester);
         mockPasswordRepoFindById(password.getId(), password);
 
@@ -162,21 +175,27 @@ class PasswordServiceTest {
     }
 
     @Test
-    void testGetAllPasswordsResponse() {
+    void testGetAllPasswordsResponse() throws GeneralSecurityException {
         // Arrange
         User owner = mockUser();
-        Password password1 = mockPassword(1L, owner);
-        Password password2 = mockPassword(2L, owner);
+        String plainPassword1 = "Password!123";
+        String encryptedPassword1 = "abcdefghij";
+        String plainPassword2 = "Password!1234";
+        String encryptedPassword2 = "xyzcvf";
+
+        Password password1 = mockPassword(1L, owner, encryptedPassword1);
+        Password password2 = mockPassword(2L, owner, encryptedPassword2);
         mockAuthValidator(owner);
         mockPasswordRepoFindAllByOwner(owner, List.of(password1, password2));
-
+        mockPasswordEncrypter(plainPassword1, encryptedPassword1);
+        mockPasswordEncrypter(plainPassword2, encryptedPassword2);
         // Act
         GetAllPasswordsResponse response = passwordService.getAllPasswordsResponse();
 
         // Assert
         assertNotNull(response);
-        assertTrue(response.getPasswords().contains(new BasicPassword(password1)));
-        assertTrue(response.getPasswords().contains(new BasicPassword(password2)));
+        assertTrue(response.getPasswords().contains(new BasicPassword(password1, plainPassword1)));
+        assertTrue(response.getPasswords().contains(new BasicPassword(password2, plainPassword2)));
     }
 
     @Test
@@ -198,8 +217,13 @@ class PasswordServiceTest {
     void testGetAllPasswordsResponseWhenAuthFail() {
         // Arrange
         User owner = mockUser();
-        Password password1 = mockPassword(1L, owner);
-        Password password2 = mockPassword(2L, owner);
+        String plainPassword1 = "Password!123";
+        String encryptedPassword1 = "abcdefghij";
+        String plainPassword2 = "Password!1234";
+        String encryptedPassword2 = "xyzcvf";
+
+        Password password1 = mockPassword(1L, owner, encryptedPassword1);
+        Password password2 = mockPassword(2L, owner, encryptedPassword2);
         when(authValidator.validateUser()).thenThrow(AuthException.class);
         mockPasswordRepoFindAllByOwner(owner, List.of(password1, password2));
 
@@ -211,8 +235,13 @@ class PasswordServiceTest {
     void testGetAllPasswordsResponseWhenUserNotFound() {
         // Arrange
         User owner = mockUser();
-        Password password1 = mockPassword(1L, owner);
-        Password password2 = mockPassword(2L, owner);
+        String plainPassword1 = "Password!123";
+        String encryptedPassword1 = "abcdefghij";
+        String plainPassword2 = "Password!1234";
+        String encryptedPassword2 = "xyzcvf";
+
+        Password password1 = mockPassword(1L, owner, encryptedPassword1);
+        Password password2 = mockPassword(2L, owner, encryptedPassword2);
         when(authValidator.validateUser()).thenThrow(UsernameNotFoundException.class);
         mockPasswordRepoFindAllByOwner(owner, List.of(password1, password2));
 
@@ -221,15 +250,15 @@ class PasswordServiceTest {
     }
 
     @Test
-    void testCreatePasswordResponse() throws PasswordCreationException {
+    void testCreatePasswordResponse() throws PasswordCreationException, GeneralSecurityException {
         // Arrange
         User owner = mockUser();
         String name = "password";
         String value = "value";
-        String encodedValue = "encodedValue";
+        String encryptedValue = "encryptedValue";
         CreatePasswordRequest request = mockCreatePasswordRequest(name, value);
         mockAuthValidator(owner);
-        mockPasswordEncoder(value, encodedValue);
+        mockPasswordEncrypter(value, encryptedValue);
 
         // Act
         CreatePasswordResponse response = passwordService.createPasswordResponse(request);
@@ -238,7 +267,7 @@ class PasswordServiceTest {
         assertNotNull(response);
         assertNotNull(response.getPassword());
         assertEquals(response.getPassword().getName(), name);
-        assertEquals(response.getPassword().getValue(), encodedValue);
+        assertEquals(response.getPassword().getDecryptedValue(), value);
         assertEquals(response.getPassword().getOwnerId(), owner.getId());
         assertNotNull(response.getPassword().getCreated());
         assertNotNull(response.getPassword().getModified());
@@ -274,14 +303,14 @@ class PasswordServiceTest {
     @ParameterizedTest
     @ValueSource(strings = {""})
     @NullSource
-    void testCreatePasswordResponseWhenNameIsNotValid(String name) {
+    void testCreatePasswordResponseWhenNameIsNotValid(String name) throws GeneralSecurityException {
         // Arrange
         User owner = mockUser();
         String value = "value";
-        String encodedValue = "encodedValue";
+        String encryptedValue = "encryptedValue";
         CreatePasswordRequest request = mockCreatePasswordRequest(name, value);
         mockAuthValidator(owner);
-        mockPasswordEncoder(value, encodedValue);
+        mockPasswordEncrypter(value, encryptedValue);
 
         // Assert
         Exception ex = assertThrows(PasswordException.class, () -> passwordService.createPasswordResponse(request));
@@ -292,7 +321,10 @@ class PasswordServiceTest {
     void testDeletePassword() {
         // Arrange
         User owner = mockUser();
-        Password password = mockPassword(1L, owner);
+        String plainPassword = "Password!123";
+        String encryptedPassword = "abcdefghij";
+
+        Password password = mockPassword(1L, owner, encryptedPassword);
         mockAuthValidator(owner);
         mockPasswordRepoFindById(password.getId(), password);
 
@@ -304,7 +336,10 @@ class PasswordServiceTest {
     void testDeletePasswordWhenAuthFail() {
         // Arrange
         User owner = mockUser();
-        Password password = mockPassword(1L, owner);
+        String plainPassword = "Password!123";
+        String encryptedPassword = "abcdefghij";
+
+        Password password = mockPassword(1L, owner, encryptedPassword);
         when(authValidator.validateUser()).thenThrow(AuthException.class);
         mockPasswordRepoFindById(password.getId(), password);
 
@@ -316,7 +351,10 @@ class PasswordServiceTest {
     void testDeletePasswordWhenUserNotFound() {
         // Arrange
         User owner = mockUser();
-        Password password = mockPassword(1L, owner);
+        String plainPassword = "Password!123";
+        String encryptedPassword = "abcdefghij";
+
+        Password password = mockPassword(1L, owner, encryptedPassword);
         when(authValidator.validateUser()).thenThrow(UsernameNotFoundException.class);
         mockPasswordRepoFindById(password.getId(), password);
 
@@ -328,7 +366,10 @@ class PasswordServiceTest {
     void testDeletePasswordWhenPasswordNotFound() {
         // Arrange
         User owner = mockUser();
-        Password password = mockPassword(1L, owner);
+        String plainPassword = "Password!123";
+        String encryptedPassword = "abcdefghij";
+
+        Password password = mockPassword(1L, owner, encryptedPassword);
         mockAuthValidator(owner);
         mockPasswordRepoFindById(password.getId(), null);
 
@@ -342,9 +383,11 @@ class PasswordServiceTest {
         // Arrange
         User requester = mockUser();
         User owner = mockUser();
+        String plainPassword = "Password!123";
+        String encryptedPassword = "abcdefghij";
         owner.setEmail("owner");
 
-        Password password = mockPassword(1L, owner);
+        Password password = mockPassword(1L, owner, encryptedPassword);
         mockAuthValidator(requester);
         mockPasswordRepoFindById(password.getId(), password);
 

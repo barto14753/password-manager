@@ -58,7 +58,7 @@ function PasswordRow(props) {
 				<TextField
 					disabled
 					type={showPassword ? "text" : "password"}
-					value={data.value}
+					value={data.decryptedValue}
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">

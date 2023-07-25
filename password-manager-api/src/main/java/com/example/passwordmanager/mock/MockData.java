@@ -1,5 +1,6 @@
 package com.example.passwordmanager.mock;
 
+import com.example.passwordmanager.crypto.Encrypter;
 import com.example.passwordmanager.model.Password;
 import com.example.passwordmanager.model.Role;
 import com.example.passwordmanager.model.User;
@@ -11,6 +12,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.security.GeneralSecurityException;
+
 @Component
 @RequiredArgsConstructor
 @Transactional
@@ -18,6 +21,7 @@ public class MockData implements CommandLineRunner {
     private final UserRepo userRepo;
     private final PasswordRepo passwordRepo;
     private final PasswordEncoder passwordEncoder;
+    private final Encrypter encrypter;
 
     public User createUser(String email, String firstName, String lastName, String password) {
         User user = User.builder()
@@ -32,10 +36,10 @@ public class MockData implements CommandLineRunner {
         return user;
     }
 
-    public Password createPassword(String name, String value, User owner) {
+    public Password createPassword(String name, String value, User owner) throws GeneralSecurityException {
         Password password = Password.builder()
                 .name(name)
-                .value(passwordEncoder.encode(value))
+                .encryptedValue(encrypter.encrypt(value))
                 .owner(owner)
                 .created(System.currentTimeMillis())
                 .modified(System.currentTimeMillis())

@@ -21,7 +21,7 @@ public class Password {
     private String name;
 
     @Column(name = "value", nullable = false)
-    private String value;
+    private String encryptedValue;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "_user")

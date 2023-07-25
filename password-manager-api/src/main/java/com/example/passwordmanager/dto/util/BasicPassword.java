@@ -1,11 +1,12 @@
 package com.example.passwordmanager.dto.util;
 
+import com.example.passwordmanager.crypto.Encrypter;
 import com.example.passwordmanager.model.Password;
-import com.example.passwordmanager.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.security.GeneralSecurityException;
 
 @Data
 @Builder
@@ -14,15 +15,15 @@ import lombok.NoArgsConstructor;
 public class BasicPassword {
     private Long id;
     private String name;
-    private String value;
+    private String decryptedValue;
     private Long ownerId;
     private Long created;
     private Long modified;
 
-    public BasicPassword(Password password) {
+    public BasicPassword(Password password, String decryptedValue) {
         this.id = password.getId();
         this.name = password.getName();
-        this.value = password.getValue();
+        this.decryptedValue = decryptedValue;
         this.ownerId = password.getOwner().getId();
         this.created = password.getCreated();
         this.modified = password.getModified();
