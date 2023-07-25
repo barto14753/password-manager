@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.GeneralSecurityException;
+
 @RestController
 @RequestMapping("/password")
 @SecurityRequirement(name = "Bearer Authentication")
@@ -22,7 +24,7 @@ public class PasswordController {
     @GetMapping("/{id}")
     ResponseEntity<GetPasswordResponse> getPassword(
             @PathVariable("id") Long id
-    ) throws PasswordException {
+    ) throws PasswordException, GeneralSecurityException {
         return ResponseEntity.ok().body(passwordService.getPasswordResponse(id));
     }
 
@@ -33,7 +35,7 @@ public class PasswordController {
 
     @PostMapping
     ResponseEntity<CreatePasswordResponse> createPassword(@RequestBody CreatePasswordRequest request)
-            throws PasswordCreationException {
+            throws PasswordCreationException, GeneralSecurityException {
         return ResponseEntity.ok().body(passwordService.createPasswordResponse(request));
     }
 

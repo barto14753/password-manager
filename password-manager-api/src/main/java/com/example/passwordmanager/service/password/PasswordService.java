@@ -1,5 +1,6 @@
 package com.example.passwordmanager.service.password;
 
+import com.example.passwordmanager.crypto.Encrypter;
 import com.example.passwordmanager.dto.request.password.CreatePasswordRequest;
 import com.example.passwordmanager.dto.response.password.CreatePasswordResponse;
 import com.example.passwordmanager.dto.response.password.GetAllPasswordsResponse;
@@ -17,9 +18,9 @@ import com.example.passwordmanager.validator.AuthValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,33 +31,41 @@ import java.util.Optional;
 public class PasswordService {
     private final PasswordRepo passwordRepo;
     private final AuthValidator authValidator;
-    private final PasswordEncoder passwordEncoder;
+    private final Encrypter encrypter;
 
-    public GetPasswordResponse getPasswordResponse(Long id) throws PasswordException {
+    public GetPasswordResponse getPasswordResponse(Long id) throws PasswordException, GeneralSecurityException {
         User user = authValidator.validateUser();
         Password password = getPasswordOwnedBy(user, id);
+        String decryptedPassword = encrypter.decrypt(password.getEncryptedValue());
         log.info("User " + user.getEmail() + " get password with id " + id);
         return GetPasswordResponse.builder()
-                .password(new BasicPassword(password))
+                .password(new BasicPassword(password, decryptedPassword))
                 .build();
     }
 
     public GetAllPasswordsResponse getAllPasswordsResponse() {
         User user = authValidator.validateUser();
         List<Password> passwords = passwordRepo.findAllByOwner(user);
-        List<BasicPassword> basicPasswords = passwords.stream().map(BasicPassword::new).toList();
+        List<BasicPassword> basicPasswords = passwords.stream().map(password -> {
+            try {
+                return new BasicPassword(password, encrypter.decrypt(password.getEncryptedValue()));
+            } catch (GeneralSecurityException e) {
+                return null;
+            }
+        }).toList();
         log.info("User " + user.getEmail() + " get all passwords with id");
         return GetAllPasswordsResponse.builder()
                 .passwords(basicPasswords)
                 .build();
     }
 
-    public CreatePasswordResponse createPasswordResponse(CreatePasswordRequest request) throws PasswordCreationException {
+    public CreatePasswordResponse createPasswordResponse(CreatePasswordRequest request) throws PasswordCreationException, GeneralSecurityException {
         User user = authValidator.validateUser();
         Password password = createPassword(user, request.getName(), request.getValue());
+        String decryptedPassword = encrypter.decrypt(password.getEncryptedValue());
         log.info("User " + user.getEmail() + " create password + " + password.getName() + " with id");
         return CreatePasswordResponse.builder()
-                .password(new BasicPassword(password))
+                .password(new BasicPassword(password, decryptedPassword))
                 .build();
     }
 
@@ -88,7 +97,7 @@ public class PasswordService {
         return password;
     }
 
-    private Password createPassword(User owner, String name, String value) throws PasswordCreationException {
+    private Password createPassword(User owner, String name, String value) throws PasswordCreationException, GeneralSecurityException {
         if (name == null || name.isEmpty()) {
             ExceptionMessage msg = ExceptionMessages.getPasswordNameCannotBeNull(owner.getEmail());
             log.info(msg.getLogMessage());
@@ -97,7 +106,7 @@ public class PasswordService {
         Long creationTime = System.currentTimeMillis();
         Password password = Password.builder()
                 .name(name)
-                .value(passwordEncoder.encode(value))
+                .encryptedValue(encrypter.encrypt(value))
                 .owner(owner)
                 .created(creationTime)
                 .modified(creationTime)
