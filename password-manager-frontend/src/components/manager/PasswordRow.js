@@ -15,28 +15,47 @@ import {
 } from "@mui/material";
 import { milisecondsToDate } from "../../utils/dateParser";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import PasswordService from "../../services/PasswordService";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function PasswordRow(props) {
-	const data = props.data;
+	const password = props.password;
+	const deletePassword = props.deletePassword;
+	const dispatcher = useDispatch();
+
 	const [open, setOpen] = React.useState(false);
 	const [showPassword, setShowPassword] = React.useState(false);
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
+	const handleOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = (event) => {
+		event.stopPropagation();
+		setOpen(false);
+	};
+
+	const handleDelete = (event) => {
+		event.stopPropagation();
+		PasswordService.deletePassword(dispatcher, password.id).then(() => {
+			deletePassword(password);
+			setOpen(false);
+		});
+	};
 
 	const handleVisibilityToggle = () => {
 		setShowPassword(!showPassword);
 	};
 
 	return (
-		<TableRow key={data.id} onClick={handleOpen} hover={true}>
-			<TableCell>{data.name}</TableCell>
-			<TableCell>{milisecondsToDate(data.created)}</TableCell>
-			<TableCell>{milisecondsToDate(data.modified)}</TableCell>
-			<TableCell>{data.versions}</TableCell>
+		<TableRow key={password.id} onClick={handleOpen} hover={true}>
+			<TableCell>{password.name}</TableCell>
+			<TableCell>{milisecondsToDate(password.created)}</TableCell>
+			<TableCell>{milisecondsToDate(password.modified)}</TableCell>
+			<TableCell>{password.versions}</TableCell>
 			<Dialog
 				fullScreen
 				open={open}
@@ -44,21 +63,21 @@ function PasswordRow(props) {
 				keepMounted
 				onClose={handleClose}
 			>
-				<DialogTitle>{data.name}</DialogTitle>
+				<DialogTitle>{password.name}</DialogTitle>
 				<DialogContent dividers>
 					<DialogContentText>
-						Created: {milisecondsToDate(data.created)}
+						Created: {milisecondsToDate(password.created)}
 					</DialogContentText>
 					<DialogContentText>
-						Modified: {milisecondsToDate(data.modified)}
+						Modified: {milisecondsToDate(password.modified)}
 					</DialogContentText>
-					<DialogContentText>Versions: {data.versions}</DialogContentText>
+					<DialogContentText>Versions: {password.versions}</DialogContentText>
 				</DialogContent>
 
 				<TextField
 					disabled
 					type={showPassword ? "text" : "password"}
-					value={data.decryptedValue}
+					value={password.decryptedValue}
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">
@@ -71,7 +90,12 @@ function PasswordRow(props) {
 				/>
 
 				<DialogActions>
-					<Button onClick={handleClose}>Update</Button>
+					<Button color="primary" variant="contained" onClick={handleClose}>
+						Update
+					</Button>
+					<Button color="error" variant="contained" onClick={handleDelete}>
+						Delete
+					</Button>
 				</DialogActions>
 			</Dialog>
 		</TableRow>

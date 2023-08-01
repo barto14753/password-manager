@@ -64,3 +64,20 @@ export function apiPatch(url, body) {
 			throw error;
 		});
 }
+
+export function apiDelete(url) {
+	const accessToken = sessionStorage.getItem("access_token");
+	const headers = {
+		Authorization: `Bearer ${accessToken}`,
+	};
+	console.log(url);
+	return axios
+		.delete(url, {
+			withCredentials: true,
+			headers: headers,
+		})
+		.then((response) => response.data)
+		.catch((error) => {
+			throw error;
+		});
+}

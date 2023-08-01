@@ -44,6 +44,17 @@ function Manager(props) {
 		setAlert({ title: "", message: "", severity: "" });
 	};
 
+	const deletePassword = (password) => {
+		setAlert({
+			title: "Password deleted",
+			message: "Password " + password.name + " deleted",
+			severity: "success",
+		});
+		setPasswords((prevPasswords) =>
+			prevPasswords.filter((pass) => pass.id !== password.id)
+		);
+	};
+
 	if (passwords === null) {
 		return <div>Loading...</div>;
 	}
@@ -86,7 +97,11 @@ function Manager(props) {
 								</TableHead>
 								<TableBody>
 									{passwords.map((password) => (
-										<PasswordRow data={password} />
+										<PasswordRow
+											key={password.id}
+											password={password}
+											deletePassword={deletePassword}
+										/>
 									))}
 								</TableBody>
 							</Table>
