@@ -14,10 +14,10 @@ public class JwtConfig {
     private long refreshTokenExp;
 
     public long getAccessTokenExp() {
-        return accessTokenExp * 60 * 60 * 1000;
+        return accessTokenExp * 60 * 1000;
     }
 
     public long getRefreshTokenExp() {
-        return refreshTokenExp * 60 * 60 * 1000;
+        return refreshTokenExp * 60 * 1000;
     }
 }

@@ -1,39 +1,45 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { parseJwt } from "./jwtParser";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
+import { LOGIN_SUCCESS } from "../reducers/types";
+import { apiRefresh } from "../api/api";
+import { Logout } from "../services/AuthService";
+import { useNavigate } from "react-router-dom";
 
 function AuthVerification(props) {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (props.user && !JSON.parse(sessionStorage.getItem("user"))) {
-			props.dispatch(logout(navigate));
-		} else if (props.user) {
-			const decodedJwt = parseJwt(props.user.access_token);
-
-			if (decodedJwt.exp * 1000 < Date.now()) {
-				props.dispatch(logout(navigate));
-			} else if (decodedJwt.exp * 1000 < Date.now() + 15 * 60 * 1000) {
-			}
-		}
-	}, [navigate, props]);
-
-	useEffect(() => {
-		const handleInvalidUser = (event) => {
-			if (event.key === "user" && event.oldValue && !event.newValue) {
-				props.dispatch(logout(navigate));
-			}
+		const refresh = () => {
+			apiRefresh()
+				.then((response) => {
+					localStorage.setItem("user", JSON.stringify(response["user"]));
+					sessionStorage.setItem("access_token", response["accessToken"]);
+					sessionStorage.setItem("refresh_token", response["refreshToken"]);
+					dispatch({ type: LOGIN_SUCCESS, payload: response });
+				})
+				.catch((err) => {
+					Logout(dispatch, navigate);
+				});
 		};
 
-		window.addEventListener("storage", (event) => handleInvalidUser(event));
-		return () =>
-			window.removeEventListener("storage", (event) =>
-				handleInvalidUser(event)
-			);
-	});
+		const access_token = sessionStorage.getItem("access_token");
 
-	return <div />;
+		if (access_token) {
+			const decoded_access_token = parseJwt(access_token);
+			const ttl = decoded_access_token.exp * 1000 - Date.now();
+			if (ttl < 0) {
+				refresh();
+			} else {
+				setTimeout(() => {
+					refresh();
+				}, ttl);
+			}
+		}
+	}, [dispatch, navigate, props]);
+
+	return <div>{props.children}</div>;
 }
 
 function mapStateToProps(state) {
@@ -43,4 +49,4 @@ function mapStateToProps(state) {
 		user,
 	};
 }
-export default connect(mapStateToProps)(AuthVerify);
+export default connect(mapStateToProps)(AuthVerification);

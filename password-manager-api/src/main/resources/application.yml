@@ -37,5 +37,5 @@ api:
   version: 1.0.0
   description: Api for Password Manager
 jwt:
-  access-token-exp: 2
-  refresh-token-exp: 5
+  access-token-exp: 5
+  refresh-token-exp: 15
