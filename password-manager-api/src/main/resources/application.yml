@@ -1,0 +1,41 @@
+server:
+  servlet:
+    context-path: /api
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/password-manager-db
+    username: app
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    dispatch-options-request: true
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: <your client id>
+            client-secret: <your client secret>
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+api:
+  version: 1.0.0
+  description: Api for Password Manager
+jwt:
+  access-token-exp: 5
+  refresh-token-exp: 15
