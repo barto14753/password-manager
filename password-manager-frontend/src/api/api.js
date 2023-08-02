@@ -1,4 +1,5 @@
 import axios from "axios";
+import { POST_REFRESH } from "./urls";
 
 export function apiPost(url, body) {
 	const config = {
@@ -76,6 +77,23 @@ export function apiDelete(url) {
 			withCredentials: true,
 			headers: headers,
 		})
+		.then((response) => response.data)
+		.catch((error) => {
+			throw error;
+		});
+}
+
+export function apiRefresh() {
+	const refreshToken = sessionStorage.getItem("refresh_token");
+	const config = {
+		headers: {
+			Authorization: `Bearer ${refreshToken}`,
+			"Content-Type": "application/json",
+			withCredentials: true,
+		},
+	};
+	return axios
+		.post(POST_REFRESH, JSON.stringify({}), config)
 		.then((response) => response.data)
 		.catch((error) => {
 			throw error;
