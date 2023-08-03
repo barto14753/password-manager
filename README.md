@@ -25,6 +25,7 @@ docker-compose up
 - [X]  Want to login
 - [X]  Want to reset password
 - [X]  Want to edit profile
+- [X]  Want to see list of my passwords
 - [X]  Want to create password
 - [X]  Want to delete password
 - [ ]  Want to create password for certain pattern
