@@ -1,9 +1,7 @@
 version: '3.7'
 services:
-  API:
-    image: 'password-manager-api'
-    build:
-      context: .
+  api:
+    build: 'password-manager-api/'
     ports:
       - "8080:8080"
     depends_on:
@@ -15,9 +13,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
   frontend:
-    image: 'password-manager-frontend'
-    build:
-      context: .
+    build: 'password-manager-frontend/'
     ports:
       - "3000:3000"
 
