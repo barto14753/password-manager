@@ -10,6 +10,8 @@ Password manager backend application and PostegreSQL database
 ## Swagger
 Local SwaggerUI hosted on [link](http://localhost:8080/api/swagger-ui/index.html#/)
 
+![Swagger](../readme/swagger.png)
+
 ## Image
 To build password-manager-api docker image execute
 ```bash

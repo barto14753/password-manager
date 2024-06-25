@@ -20,25 +20,19 @@ Run docker-compose to create setup
 docker-compose up
 ```
 
-## Features
-- [X]  Want to create account
-- [X]  Want to login
-- [X]  Want to reset password
-- [X]  Want to edit profile
-- [X]  Want to see list of my passwords
-- [X]  Want to create password
-- [X]  Want to delete password
-- [ ]  Want to create password for certain pattern
-- [ ]  Want to assign it to certain website/urls
-- [ ]  Want to edit password/generate new
-- [ ]  Want to keep password history
-- [ ]  Want to edit password history
-- [ ]  Want to set expiration date of password
-- [ ]  Want to see when password was created/lately modified and how many versions
-- [ ]  Want to rollback to some version of password
-- [ ]  Want to be notified when password expire and have been notified about it until it is changed or expiration is modified/deleted
-- [ ]  Want to share password with somebody, link and someone need to pass secret code to see it
-- [ ]  Want to copy password hash (all popular algorithms)
-- [ ]  Want to copy encrypted password
-- [ ]  Want to enable 2FA (Authentication app needed) for certain passwords
+## App
 
+### Frontend
+Frontend is a React application that allows user to manage passwords. It is connected to backend application.
+
+![Landing page](./readme/landing.png)
+![Sign up](./readme/sign_up.png)
+![Sign in](./readme/sign_in.png)
+![Profile](./readme/profile.png)
+![Manager](./readme/manager.png)
+![Password](./readme/password.png)
+
+### Backend
+Backend is a Spring application that provides REST API for frontend application. It is connected to PostgreSQL database.
+
+![Swagger](./readme/swagger.png)

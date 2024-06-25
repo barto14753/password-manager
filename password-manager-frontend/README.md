@@ -40,3 +40,12 @@ npm start
 ```
 
 Open localhost:3000 in browser
+
+## App
+
+![Landing page](../readme/landing.png)
+![Sign up](../readme/sign_up.png)
+![Sign in](../readme/sign_in.png)
+![Profile](../readme/profile.png)
+![Manager](../readme/manager.png)
+![Password](../readme/password.png)
