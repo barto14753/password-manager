@@ -1,0 +1,18 @@
+package com.barto14753.passwordmanager.dto.response.auth;
+
+import com.barto14753.passwordmanager.dto.util.BasicUser;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class AuthenticationResponse {
+    private BasicUser user;
+    private String accessToken;
+    private String refreshToken;
+
+}

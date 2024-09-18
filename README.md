@@ -1,13 +1,17 @@
+<div align="center">
+  <h1 align="center">Password Manager</h1>
+</div>
+<p align="center">
+    <a><img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=whit"></a>
+    <a><img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"></a>
+    <a><img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white"></a>
+    <a><img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white"></a>
+</p>
 
-# Password Manager
-
-[![](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=whit)]()
-[![](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)]()
-[![](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)]()
-[![](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)]()
-[![](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white)]()
-[![](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)]()
-[![](https://img.shields.io/badge/Material%20UI-007FFF?style=for-the-badge&logo=mui&logoColor=white)]()
+<p align="center">
+    <a href="https://github.com/barto14753/password-manager/actions/workflows/api-ci.yml"><img src="https://github.com/barto14753/script-manager/actions/workflows/api-ci.yml/badge.svg" alt="API-CI"></a>
+    <a href="https://github.com/barto14753/password-manager/actions/workflows/frontend-ci.yml"><img src="https://github.com/barto14753/script-manager/actions/workflows/frontend-ci.yml/badge.svg" alt="FRONTEND-CI"></a>
+</p>
 
 Password manager contains of:
 * React web application

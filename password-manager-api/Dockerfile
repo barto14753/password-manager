@@ -1,4 +1,4 @@
-FROM openjdk:20
+FROM openjdk:21
 EXPOSE 8080
 RUN mkdir /src
 RUN mkdir /src/main
