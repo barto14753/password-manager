@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/barto14753/password-manager/actions/workflows/api-ci.yml"><img src="https://github.com/barto14753/script-manager/actions/workflows/api-ci.yml/badge.svg" alt="API-CI"></a>
-    <a href="https://github.com/barto14753/password-manager/actions/workflows/frontend-ci.yml"><img src="https://github.com/barto14753/script-manager/actions/workflows/frontend-ci.yml/badge.svg" alt="FRONTEND-CI"></a>
+    <a href="https://github.com/barto14753/password-manager/actions/workflows/api-ci.yml"><img src="https://github.com/barto14753/password-manager/actions/workflows/api-ci.yml/badge.svg" alt="API-CI"></a>
+    <a href="https://github.com/barto14753/password-manager/actions/workflows/frontend-ci.yml"><img src="https://github.com/barto14753/password-manager/actions/workflows/frontend-ci.yml/badge.svg" alt="FRONTEND-CI"></a>
 </p>
 
 Password manager contains of:
