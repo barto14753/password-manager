@@ -13,7 +13,7 @@ import com.barto14753.passwordmanager.exception.password.PasswordOwnershipExcept
 import com.barto14753.passwordmanager.exception.util.ExceptionMessage;
 import com.barto14753.passwordmanager.model.Password;
 import com.barto14753.passwordmanager.model.User;
-import com.barto14753.passwordmanager.repo.user.PasswordRepo;
+import com.barto14753.passwordmanager.repo.password.PasswordRepo;
 import com.barto14753.passwordmanager.validator.AuthValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -4,7 +4,7 @@ import com.barto14753.passwordmanager.crypto.Encrypter;
 import com.barto14753.passwordmanager.model.Password;
 import com.barto14753.passwordmanager.model.Role;
 import com.barto14753.passwordmanager.model.User;
-import com.barto14753.passwordmanager.repo.user.PasswordRepo;
+import com.barto14753.passwordmanager.repo.password.PasswordRepo;
 import com.barto14753.passwordmanager.repo.user.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

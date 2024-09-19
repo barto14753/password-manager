@@ -1,4 +1,4 @@
-package com.barto14753.passwordmanager.repo.user;
+package com.barto14753.passwordmanager.repo.password;
 
 import com.barto14753.passwordmanager.model.Password;
 import com.barto14753.passwordmanager.model.User;

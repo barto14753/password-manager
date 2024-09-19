@@ -13,7 +13,7 @@ import com.barto14753.passwordmanager.exception.password.PasswordException;
 import com.barto14753.passwordmanager.model.Password;
 import com.barto14753.passwordmanager.model.Role;
 import com.barto14753.passwordmanager.model.User;
-import com.barto14753.passwordmanager.repo.user.PasswordRepo;
+import com.barto14753.passwordmanager.repo.password.PasswordRepo;
 import com.barto14753.passwordmanager.validator.AuthValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

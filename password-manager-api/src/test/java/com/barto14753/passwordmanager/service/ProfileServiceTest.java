@@ -1,6 +1,6 @@
 package com.barto14753.passwordmanager.service;
 
-import com.barto14753.passwordmanager.dto.request.PatchProfileRequest;
+import com.barto14753.passwordmanager.dto.request.profile.PatchProfileRequest;
 import com.barto14753.passwordmanager.dto.response.ProfileResponse;
 import com.barto14753.passwordmanager.exception.AuthException;
 import com.barto14753.passwordmanager.model.Role;

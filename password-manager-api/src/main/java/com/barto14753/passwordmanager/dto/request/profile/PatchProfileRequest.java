@@ -1,4 +1,4 @@
-package com.barto14753.passwordmanager.dto.request;
+package com.barto14753.passwordmanager.dto.request.profile;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

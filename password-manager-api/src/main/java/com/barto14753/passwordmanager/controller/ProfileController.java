@@ -1,6 +1,6 @@
 package com.barto14753.passwordmanager.controller;
 
-import com.barto14753.passwordmanager.dto.request.PatchProfileRequest;
+import com.barto14753.passwordmanager.dto.request.profile.PatchProfileRequest;
 import com.barto14753.passwordmanager.dto.response.ProfileResponse;
 import com.barto14753.passwordmanager.service.ProfileService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
