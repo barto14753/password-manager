@@ -1,5 +1,6 @@
 package com.barto14753.passwordmanager.config.jwt;
 
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,34 +24,50 @@ public class JwtAuthnFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
+    private String extractJwtFromRequest(HttpServletRequest request) {
+        final String authHeader = request.getHeader("authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+        return authHeader.substring(7);
+    }
+
+    private void validateAndAuthenticateToken(String jwt, HttpServletRequest request) {
+        try {
+            String userEmail = jwtService.extractUsername(jwt);
+            if (userEmail == null || SecurityContextHolder.getContext().getAuthentication() != null) {
+                return;
+            }
+            authenticateToken(jwt, userEmail, request);
+        } catch (SignatureException ex) {
+            logger.debug("Invalid JWT signature");
+        }
+    }
+
+    private void authenticateToken(String jwt, String userEmail, HttpServletRequest request) {
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+        if (jwtService.isTokenValid(jwt, userDetails)) {
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities()
+            );
+            authToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+            );
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+    }
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        final String authHeader = request.getHeader("authorization");
-        final String jwt;
-        final String userEmail;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
+        final String jwt = extractJwtFromRequest(request);
+        if (jwt != null) {
+            validateAndAuthenticateToken(jwt, request);
         }
         filterChain.doFilter(request, response);
     }

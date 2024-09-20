@@ -28,6 +28,11 @@ public class AuthValidator {
         }
         String email = auth.getName();
 
+        // Check if user is not anonymous
+        if (email == null || email.equals("anonymousUser")) {
+            throw new AuthException(ExceptionMessages.AUTH_FAILED);
+        }
+
         // Find user
         Optional<User> user = userRepo.findByEmail(email);
 

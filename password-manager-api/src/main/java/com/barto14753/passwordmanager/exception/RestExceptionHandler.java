@@ -28,7 +28,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Object> handleUsernameNotFound(UsernameNotFoundException ex) {
-        return handleExceptionWithStatusCode(NOT_FOUND, ex);
+        return handleExceptionWithStatusCode(UNAUTHORIZED, ex);
     }
 
     @ExceptionHandler(SignatureException.class)
@@ -53,7 +53,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<Object> handleAuthException(AuthException ex) {
-        return handleExceptionWithStatusCode(BAD_REQUEST, ex);
+        return handleExceptionWithStatusCode(UNAUTHORIZED, ex);
     }
 
     @ExceptionHandler(BadCredentialsException.class)

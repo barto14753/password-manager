@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = RandomStringUtils.random(256, true, true);
+    private static final String SECRET_KEY = "SECRET";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
