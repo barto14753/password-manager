@@ -27,6 +27,9 @@ public class KDBX {
     @Column(name = "password")
     private String password;
 
+    @Column(name="open", nullable = false)
+    private boolean open = false;
+
     @Lob
     @Column(name = "data", nullable = false)
     private byte[] data;

@@ -91,6 +91,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionWithStatusCode(REQUEST_TIMEOUT, ex);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return handleExceptionWithStatusCode(BAD_REQUEST, ex);
+    }
+
     private ResponseEntity<Object> handleExceptionWithStatusCode(HttpStatus httpStatus, Exception ex) {
         ApiError apiError = new ApiError(httpStatus);
         apiError.setMessage(ex.getMessage());

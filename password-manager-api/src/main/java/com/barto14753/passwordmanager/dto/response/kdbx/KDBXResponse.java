@@ -14,5 +14,6 @@ public class KDBXResponse {
     private Long owner_id;
     private String name;
     private String password;
+    private boolean open;
     private String created;
 }
