@@ -1,58 +1,58 @@
-# Continous integration for API
-
 name: API-CI
 
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: ["main"]
+    branches: ["master", "develop"]
   pull_request:
-    branches: ["main", "develop"]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: ["master", "develop"]
   workflow_dispatch:
 
 jobs:
-  # Build api package
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: "21"
           distribution: "temurin"
-
       - name: Build and unit test
         run: |
           cd password-manager-api
           mvn --quiet --batch-mode --update-snapshots package
 
-  # Run unit tests
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: "21"
           distribution: "temurin"
-
-      - name: Build and unit test
+      - name: Run tests with JaCoCo
         run: |
           cd password-manager-api
-          mvn test
+          mvn test org.jacoco:jacoco-maven-plugin:report
+      - name: Add coverage to PR
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.7.1
+        with:
+          paths: ${{ github.workspace }}/password-manager-api/target/site/jacoco/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 80
+          min-coverage-changed-files: 80
+      - name: Upload JaCoCo coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-report
+          path: password-manager-api/target/site/jacoco/
 
-  # Scan source code for credentials and vulnerabilities
   scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Perform Scan
         uses: ShiftLeftSecurity/scan-action@master
         with:
