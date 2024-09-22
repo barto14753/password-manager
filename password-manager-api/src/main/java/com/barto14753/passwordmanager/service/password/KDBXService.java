@@ -1,6 +1,5 @@
 package com.barto14753.passwordmanager.service.password;
 
-import ch.qos.logback.core.testUtil.RandomUtil;
 import com.barto14753.passwordmanager.dto.response.kdbx.KDBXResponse;
 import com.barto14753.passwordmanager.model.KDBX;
 import com.barto14753.passwordmanager.model.Password;
