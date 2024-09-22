@@ -28,7 +28,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
           level: warning
-          checkstyle_config: checkstyle.xml
+          checkstyle_config: password-manager-api/checkstyle.xml
 
   test:
     runs-on: ubuntu-latest
