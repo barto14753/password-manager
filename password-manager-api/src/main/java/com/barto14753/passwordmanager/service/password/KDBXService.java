@@ -1,5 +1,6 @@
 package com.barto14753.passwordmanager.service.password;
 
+import ch.qos.logback.core.testUtil.RandomUtil;
 import com.barto14753.passwordmanager.dto.response.kdbx.KDBXResponse;
 import com.barto14753.passwordmanager.model.KDBX;
 import com.barto14753.passwordmanager.model.Password;
@@ -12,6 +13,7 @@ import de.slackspace.openkeepass.domain.KeePassFile;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Files;
@@ -121,7 +123,8 @@ public class KDBXService {
 
     private KeePassDatabase loadKeePassDatabase(User user, byte[] file) {
         try {
-            Path path = Paths.get("database.kdbx");
+            String temporaryFileName = "database_" + RandomStringUtils.randomAlphanumeric(10) + ".kdbx";
+            Path path = Paths.get(temporaryFileName);
             Files.write(path, file);
             KeePassDatabase database = KeePassDatabase.getInstance(path.toFile());
             Files.delete(path);
