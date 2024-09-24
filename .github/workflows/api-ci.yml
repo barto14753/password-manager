@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,9 +22,17 @@ jobs:
         run: |
           cd password-manager-api
           mvn --quiet --batch-mode --update-snapshots package
+      - name: Run checkstyle
+        uses: dbelyaev/action-checkstyle@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          level: error
+          checkstyle_config: password-manager-api/checkstyle.xml
 
   test:
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
