@@ -15,17 +15,32 @@ export function apiPost(url, body) {
 		});
 }
 
-export function apiAuthorizedPost(url, body) {
+export function apiAuthorizedPost(
+	url,
+	body,
+	file = null,
+	contentType = "application/json"
+) {
 	const accessToken = sessionStorage.getItem("access_token");
 	const config = {
 		headers: {
 			Authorization: `Bearer ${accessToken}`,
-			"Content-Type": "application/json",
 			withCredentials: true,
 		},
 	};
+	let bodyData;
+	if (file) {
+		console.log("file", file);
+		bodyData = new FormData();
+		bodyData.append("file", file, file.name);
+		config.headers["Content-Type"] = "multipart/form-data";
+	} else {
+		config.headers["Content-Type"] = contentType;
+		bodyData = contentType === "application/json" ? JSON.stringify(body) : body;
+	}
+
 	return axios
-		.post(url, JSON.stringify(body), config)
+		.post(url, bodyData, config)
 		.then((response) => response.data)
 		.catch((error) => {
 			throw error;

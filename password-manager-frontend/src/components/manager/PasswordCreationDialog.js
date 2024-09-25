@@ -9,6 +9,10 @@ import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import PasswordService from "../../services/PasswordService";
 import { useDispatch } from "react-redux";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import InputAdornment from "@mui/material/InputAdornment";
 
 export default function PasswordCreationDialog() {
 	const dispatcher = useDispatch();
@@ -17,6 +21,7 @@ export default function PasswordCreationDialog() {
 		name: "",
 		password: "",
 	});
+	const [showPassword, setShowPassword] = React.useState(false);
 
 	const handleChange = (event) => {
 		const { id, value } = event.target;
@@ -41,6 +46,10 @@ export default function PasswordCreationDialog() {
 			formData.password
 		).then(() => window.location.reload());
 		setOpen(false);
+	};
+
+	const handleClickShowPassword = () => {
+		setShowPassword(!showPassword);
 	};
 
 	return (
@@ -69,15 +78,27 @@ export default function PasswordCreationDialog() {
 						onChange={handleChange}
 					/>
 					<TextField
-						autoFocus
 						margin="dense"
 						id="password"
 						label="Password"
 						value={formData.password}
-						type="password"
+						type={showPassword ? "text" : "password"}
 						fullWidth
 						variant="standard"
 						onChange={handleChange}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										edge="end"
+									>
+										{showPassword ? <VisibilityOff /> : <Visibility />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
 					/>
 				</DialogContent>
 				<DialogActions>

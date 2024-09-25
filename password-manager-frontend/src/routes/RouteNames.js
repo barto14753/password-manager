@@ -6,4 +6,5 @@ export const RouteNames = {
 	PASSOWRD_RESET: "/password-reset",
 	PROFILE: "/profile",
 	MANAGER: "/manager",
+	KDBX: "/kdbx",
 };
