@@ -62,8 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Change to password-manager-api directory
+        run: cd password-manager-api
       - name: Perform Scan
         uses: ShiftLeftSecurity/scan-action@master
-        with:
-          type: "credscan,java,depscan"
-          path: "password-manager-api"

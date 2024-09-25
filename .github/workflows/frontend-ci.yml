@@ -25,9 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      - name: Change directory
+        run: cd password-manager-frontend
       - name: Perform Scan
         uses: ShiftLeftSecurity/scan-action@master
-        with:
-          type: "credscan,depscan"
-          path: "password-manager-frontend"
