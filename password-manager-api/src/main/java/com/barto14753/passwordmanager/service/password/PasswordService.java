@@ -53,7 +53,7 @@ public class PasswordService {
                 return null;
             }
         }).toList();
-        log.info("User " + user.getEmail() + " get all passwords with id");
+        log.info("User " + user.getEmail() + " get all passwords");
         return GetAllPasswordsResponse.builder()
                 .passwords(basicPasswords)
                 .build();

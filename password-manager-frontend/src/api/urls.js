@@ -14,3 +14,7 @@ export const PATCH_PROFILE = BASE_URL + "/profile";
 export const GET_PASSWORDS = BASE_URL + "/password/all";
 export const CREATE_PASSWORD = BASE_URL + "/password";
 export const DELETE_PASSWORD = BASE_URL + "/password";
+
+// KDBX files
+export const GET_FILES = BASE_URL + "/password/kdbx/all";
+export const CREATE_KDBX = BASE_URL + "/password/kdbx";

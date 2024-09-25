@@ -44,6 +44,11 @@ function ResponsiveAppBar(props) {
 						name: "Manager",
 						route: RouteNames.MANAGER,
 					},
+					{
+						key: 5,
+						name: "KDBX",
+						route: RouteNames.KDBX,
+					},
 			  ]
 			: []),
 	];

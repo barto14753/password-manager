@@ -7,6 +7,7 @@ import ProfileRoute from "./ProfileRoutes";
 import RegisterRoute from "./RegisterRoute";
 import ContactRoute from "./ContactRoute";
 import ManagerRoute from "./ManagerRoute";
+import KdbxRoute from "./KdbxRoute";
 
 export default function AppRoutes() {
 	return (
@@ -19,6 +20,7 @@ export default function AppRoutes() {
 			<Route path={"/password-reset/*"} element={<PasswordResetRoute />} />
 			<Route path={"/profile/*"} element={<ProfileRoute />} />
 			<Route path={"/manager/*"} element={<ManagerRoute />} />
+			<Route path={"/kdbx/*"} element={<KdbxRoute />} />
 			<Route path="*" element={<PageNotFound />} />
 		</Routes>
 	);

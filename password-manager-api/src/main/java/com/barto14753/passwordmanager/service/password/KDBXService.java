@@ -34,13 +34,14 @@ public class KDBXService {
     public List<KDBXResponse> getAllKDBXFiles() {
         User user = authValidator.validateUser();
         List<KDBX> kdbxList = kdbxRepo.findAllByOwner(user);
-        log.info("User " + user.getEmail() + " fetched all KDBX files");
+        log.info("User {} fetched all KDBX files", user.getEmail());
         return kdbxList.stream()
                 .map(kdbx -> KDBXResponse.builder()
                         .id(kdbx.getId())
                         .owner_id(kdbx.getOwner().getId())
                         .name(kdbx.getName())
                         .password(kdbx.getPassword())
+                        .open(kdbx.isOpen())
                         .created(kdbx.getCreated().toString())
                         .build())
                 .collect(Collectors.toList());
@@ -65,12 +66,13 @@ public class KDBXService {
                 .created(System.currentTimeMillis())
                 .build();
         kdbxRepo.save(kdbx);
-        log.info("User " + user.getEmail() + " created KDBX with id " + kdbx.getId());
+        log.info("User {} created KDBX file with id {} and name {}", user.getEmail(), kdbx.getId(), name);
         return KDBXResponse.builder()
                 .id(kdbx.getId())
                 .owner_id(kdbx.getOwner().getId())
                 .name(kdbx.getName())
                 .password(kdbx.getPassword())
+                .open(kdbx.isOpen())
                 .created(kdbx.getCreated().toString())
                 .build();
     }
@@ -81,7 +83,7 @@ public class KDBXService {
         if (!kdbx.getOwner().equals(user)) {
             throw new IllegalArgumentException("KDBX file with id " + id + " not found");
         }
-       log.info("User " + user.getEmail() + " downloaded KDBX with id " + kdbx.getId());
+        log.info("User {} downloaded KDBX with id {}", user.getEmail(), kdbx.getId());
         return kdbx.getData();
     }
 
@@ -100,12 +102,13 @@ public class KDBXService {
         kdbx.setOpen(true);
         log.info("User {} decrypted KDBX with id {}", user.getEmail(), kdbx.getId());
         List<Password> passwords = createPasswordFromKeePassDatabase(user, keePassFile);
-        log.info("User {} create {} passwords from KDBX file", user.getEmail(), passwords.size());
+        log.info("User {} created {} passwords from KDBX file {}", user.getEmail(), passwords.size(), kdbx.getId());
         return KDBXResponse.builder()
                 .id(kdbx.getId())
                 .owner_id(kdbx.getOwner().getId())
                 .name(kdbx.getName())
                 .password(kdbx.getPassword())
+                .open(kdbx.isOpen())
                 .created(kdbx.getCreated().toString())
                 .build();
     }
@@ -117,7 +120,7 @@ public class KDBXService {
             throw new IllegalArgumentException("KDBX file with id " + id + " not found");
         }
         kdbxRepo.delete(kdbx);
-        log.info("User " + user.getEmail() + " deleted KDBX with id " + kdbx.getId());
+        log.info("User {} deleted KDBX with id {}", user.getEmail(), kdbx.getId());
     }
 
     private KeePassDatabase loadKeePassDatabase(User user, byte[] file) {
@@ -136,7 +139,9 @@ public class KDBXService {
 
     private KeePassFile openKeePassDatabase(User user, KeePassDatabase database, String password) {
         try {
-            return database.openDatabase(password);
+            KeePassFile keePassFile = database.openDatabase(password);
+            log.info("User {} opened KDBX database", user.getEmail());
+            return keePassFile;
         } catch (Exception e) {
             log.info("User {} failed to open KDBX database", user.getEmail());
             throw new IllegalArgumentException("Wrong password for KDBX database");
@@ -153,7 +158,7 @@ public class KDBXService {
                             .created(System.currentTimeMillis())
                             .modified(System.currentTimeMillis())
                             .build();
-                    log.info("User {} create password {} from KDBX file", owner.getEmail(), password.getName());
+                    log.info("User {} created password {} from KDBX file", owner.getEmail(), password.getName());
                     return passwordRepo.save(password);
                 }).collect(Collectors.toList());
     }

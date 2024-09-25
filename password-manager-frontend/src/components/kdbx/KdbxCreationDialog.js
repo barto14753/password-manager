@@ -7,14 +7,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
-import PasswordService from "../../services/PasswordService";
 import { useDispatch } from "react-redux";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
+import KdbxService from "../../services/KdbxService";
 
-export default function PasswordCreationDialog() {
+export default function KdbxCreationDialog(props) {
 	const dispatcher = useDispatch();
 	const [open, setOpen] = React.useState(false);
 	const [formData, setFormData] = React.useState({
@@ -22,6 +22,8 @@ export default function PasswordCreationDialog() {
 		password: "",
 	});
 	const [showPassword, setShowPassword] = React.useState(false);
+	const [kdbxFile, setKdbxFile] = React.useState(null);
+	const onFileCreated = props.onFileCreated;
 
 	const handleChange = (event) => {
 		const { id, value } = event.target;
@@ -31,21 +33,38 @@ export default function PasswordCreationDialog() {
 		}));
 	};
 
+	const handleFileChange = (event) => {
+		const file = event.target.files[0];
+		if (file && file.name.endsWith(".kdbx")) {
+			setKdbxFile(file);
+			setFormData((prevFormData) => ({
+				...prevFormData,
+				name: file.name.replace(".kdbx", ""),
+			}));
+		} else {
+			alert("Please select a valid .kdbx file");
+			event.target.value = null;
+		}
+	};
+
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
 
 	const handleClose = () => {
 		setOpen(false);
+		setKdbxFile(null);
 	};
 
 	const handleCreate = () => {
-		PasswordService.createPassword(
+		KdbxService.createFiles(
 			dispatcher,
 			formData.name,
+			kdbxFile,
 			formData.password
-		).then(() => window.location.reload());
-		setOpen(false);
+		);
+		onFileCreated(formData.name);
+		handleClose();
 	};
 
 	const handleClickShowPassword = () => {
@@ -61,12 +80,25 @@ export default function PasswordCreationDialog() {
 				style={{ position: "fixed", bottom: "20px", right: "20px" }}
 			>
 				<AddIcon sx={{ mr: 1 }} />
-				Add password
+				Add file
 			</Fab>
 
 			<Dialog open={open} onClose={handleClose}>
-				<DialogTitle>Add password</DialogTitle>
+				<DialogTitle>Add KDBX File</DialogTitle>
 				<DialogContent>
+					<input
+						accept=".kdbx"
+						style={{ display: "none" }}
+						id="raised-button-file"
+						type="file"
+						onChange={handleFileChange}
+					/>
+					<label htmlFor="raised-button-file">
+						<Button variant="contained" component="span">
+							Choose KDBX File
+						</Button>
+					</label>
+					{kdbxFile && <p>Selected file: {kdbxFile.name}</p>}
 					<TextField
 						autoFocus
 						margin="dense"
@@ -103,7 +135,9 @@ export default function PasswordCreationDialog() {
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Cancel</Button>
-					<Button onClick={handleCreate}>Create</Button>
+					<Button onClick={handleCreate} disabled={!kdbxFile}>
+						Create
+					</Button>
 				</DialogActions>
 			</Dialog>
 		</div>
